@@ -14,6 +14,10 @@ class ApiService {
       onResponse: (response, handler) {
         handler.next(response);
       },
+      onError: (DioException error, handler) {
+        _handleDioException(error);
+        return handler.next(error);
+      },
     ));
   }
 
@@ -22,6 +26,40 @@ class ApiService {
       'Accept': 'application/json',
       'Content-Type': 'application/json; charset=UTF-8',
     });
+  }
+
+  void _handleDioException(DioException error) {
+    String errorMessage = '';
+    switch (error.type) {
+      case DioExceptionType.cancel:
+        errorMessage = 'Request to API server was cancelled';
+        break;
+      case DioExceptionType.connectionTimeout:
+        errorMessage = 'Connection timeout with API server';
+        break;
+      case DioExceptionType.sendTimeout:
+        errorMessage = 'Send timeout in connection with API server';
+        break;
+      case DioExceptionType.receiveTimeout:
+        errorMessage = 'Receive timeout in connection with API server';
+        break;
+      case DioExceptionType.badResponse:
+        errorMessage =
+            'Received invalid status code: ${error.response?.statusCode}';
+        break;
+      case DioExceptionType.unknown:
+        errorMessage = 'Unexpected error occurred: ${error.message}';
+        break;
+      case DioExceptionType.badCertificate:
+        errorMessage = 'The server certificate is invalid or untrusted';
+        break;
+      case DioExceptionType.connectionError:
+        errorMessage =
+            'Failed to connect to the server. Check your internet connection';
+        break;
+    }
+
+    throw Exception(errorMessage);
   }
 
   Future<Response> _request(String method, String endpoint,
