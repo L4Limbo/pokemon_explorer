@@ -28,7 +28,7 @@ dependencies:
 
   # Code Generation
   riverpod_annotation: ^2.6.1
-  freezed_annotation: ^3.0.0
+  freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
   equatable: ^2.0.7
 
@@ -44,14 +44,14 @@ dev_dependencies:
   
   # Lint
   flutter_lints: ^5.0.0
-  riverpod_lint: ^2.6.5
-  custom_lint: ^0.7.5
+  riverpod_lint: ^2.6.1
+  custom_lint: ^0.7.0
 
   # Code Generation
   build_runner: ^2.4.15
-  freezed: ^3.0.0-0.0.dev
-  riverpod_generator: ^2.6.5
+  riverpod_generator: ^2.6.1
   json_serializable: ^6.9.4
+  freezed: ^2.5.7
 
 flutter:
   uses-material-design: true
