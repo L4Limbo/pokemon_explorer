@@ -25,7 +25,6 @@ class PokemonDetailsDto with _$PokemonDetailsDto {
     );
   }
 
-  /// Converts domain model to DTO
   static PokemonDetailsDto fromPokemonDetails(PokemonDetails details) {
     return PokemonDetailsDto(
       pokemon: PokemonDto.fromPokemon(details.pokemon),
