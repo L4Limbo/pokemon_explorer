@@ -29,4 +29,11 @@ class BasicStatDto with _$BasicStatDto {
       name: stat.name,
     );
   }
+
+  static BasicStatDto fromApiResponse(Map<String, dynamic> json) {
+    return BasicStatDto(
+      value: json['base_stat'] as int,
+      name: json['stat']['name'] as String,
+    );
+  }
 }

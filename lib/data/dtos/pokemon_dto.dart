@@ -29,9 +29,7 @@ class PokemonDto with _$PokemonDto {
       imagePath: pokemon.imagePath,
     );
   }
-}
 
-extension PokemonDtoX on PokemonDto {
   static PokemonDto fromApiResponse(Map<String, dynamic> json) {
     return PokemonDto(
       name: json['name'] as String,
