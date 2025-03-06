@@ -12,7 +12,17 @@ class ApiService {
         return handler.next(options);
       },
       onResponse: (response, handler) {
-        handler.next(response);
+        if (response.statusCode == 200 && response.data != null) {
+          return handler.next(response);
+        } else {
+          return handler.reject(DioException(
+            requestOptions: response.requestOptions,
+            response: response,
+            type: DioExceptionType.badResponse,
+            error:
+                'Unexpected response: ${response.statusCode}, ${response.data}',
+          ));
+        }
       },
       onError: (DioException error, handler) {
         _handleDioException(error);
@@ -28,8 +38,9 @@ class ApiService {
     });
   }
 
-  void _handleDioException(DioException error) {
-    String errorMessage = '';
+  String _handleDioException(DioException error) {
+    String errorMessage;
+
     switch (error.type) {
       case DioExceptionType.cancel:
         errorMessage = 'Request to API server was cancelled';
@@ -59,30 +70,20 @@ class ApiService {
         break;
     }
 
-    throw Exception(errorMessage);
-  }
-
-  Future<Response> _request(String method, String endpoint,
-      {Map<String, dynamic>? queryParameters}) async {
-    try {
-      Response response;
-
-      switch (method) {
-        case 'GET':
-          response = await _dio.get('/api/$endpoint',
-              queryParameters: queryParameters);
-          break;
-        default:
-          throw UnsupportedError('HTTP method not supported');
-      }
-      return response;
-    } catch (e) {
-      rethrow;
-    }
+    throw DioException(
+      requestOptions: error.requestOptions,
+      response: error.response,
+      type: error.type,
+      error: errorMessage,
+    );
   }
 
   Future<Response> get(String endpoint,
-      {Map<String, dynamic>? queryParameters}) {
-    return _request('GET', endpoint, queryParameters: queryParameters);
+      {Map<String, dynamic>? queryParameters}) async {
+    try {
+      return await _dio.get('/api/$endpoint', queryParameters: queryParameters);
+    } catch (e) {
+      rethrow;
+    }
   }
 }
