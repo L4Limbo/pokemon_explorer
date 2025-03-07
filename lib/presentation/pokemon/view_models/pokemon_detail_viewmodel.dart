@@ -7,13 +7,13 @@ part 'pokemon_detail_viewmodel.g.dart';
 
 @riverpod
 class PokemonDetailViewModel extends _$PokemonDetailViewModel {
-  late GetPokemonDetailsUseCase useCase;
+  late GetPokemonDetailsUseCase _useCase;
 
   late String _pokemonName;
 
   @override
   Future<AsyncValue<PokemonDetails>> build(String pokemonName) async {
-    useCase = ref.watch(getPokemonDetailUseCaseProvider);
+    _useCase = ref.watch(getPokemonDetailUseCaseProvider);
 
     _pokemonName = pokemonName;
     state = const AsyncValue.loading();
@@ -22,7 +22,7 @@ class PokemonDetailViewModel extends _$PokemonDetailViewModel {
 
   Future<AsyncValue<PokemonDetails>> fetchPokemonDetails() async {
     try {
-      final pokemon = await useCase.getPokemon(_pokemonName);
+      final pokemon = await _useCase.getPokemon(_pokemonName);
 
       if (pokemon is DataSuccess) {
         state = AsyncValue.data(AsyncData(pokemon.data!));
