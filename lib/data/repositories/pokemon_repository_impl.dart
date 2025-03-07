@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_explorer/data/data_sources/remote/pokemon/pokemon_api_service.dart';
 import 'package:pokemon_explorer/domain/models/data_states/data_state.dart';
 import 'package:pokemon_explorer/domain/models/data_states/data_state_types.dart';
+import 'package:pokemon_explorer/domain/models/data_states/paginated_data_state.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon_details.dart';
 import 'package:pokemon_explorer/domain/repositories/pokemon_repository.dart';
@@ -39,16 +40,16 @@ class PokemonRepositoryImpl implements PokemonRepository {
   }
 
   @override
-  Future<DataState<List<Pokemon>>> getPokemons(
+  Future<PaginatedDataState<List<Pokemon>>> getPokemons(
       Map<String, dynamic> queryParameters) async {
     try {
       final result = await _pokemonApiService.getPokemons(queryParameters);
 
-      if (result is DataSuccess) {
+      if (result is PaginatedDataSuccess) {
         final pokemons = result.data!.map((dto) => dto.toPokemon()).toList();
-        return DataSuccess(pokemons);
+        return PaginatedDataSuccess(pokemons, result.meta!);
       } else if (result is DataFailed) {
-        return DataFailed(result.error!);
+        return PaginatedDataFailed(result.error!);
       }
 
       throw Exception('Unknown data state');

@@ -6,6 +6,8 @@ import 'package:pokemon_explorer/data/dtos/pokemon_details_dto.dart';
 import 'package:pokemon_explorer/data/dtos/pokemon_dto.dart';
 import 'package:pokemon_explorer/domain/models/data_states/data_state.dart';
 import 'package:pokemon_explorer/domain/models/data_states/data_state_types.dart';
+import 'package:pokemon_explorer/domain/models/data_states/paginated_data_state.dart';
+import 'package:pokemon_explorer/domain/models/data_states/pagination_meta.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'pokemon_api_service.g.dart';
@@ -21,21 +23,27 @@ class PokemonApiService {
 
   final ApiService _apiService;
 
-  Future<DataState<List<PokemonDto>>> getPokemons(
+  Future<PaginatedDataState<List<PokemonDto>>> getPokemons(
       Map<String, dynamic> queryParameters) async {
     try {
       final response =
           await _apiService.get('v2/pokemon', queryParameters: queryParameters);
 
-      final result = (response.data['results'] as List)
+      final pokemonDtos = (response.data['results'] as List)
           .map((e) => PokemonDto.fromJson(e))
           .toList();
 
-      return DataSuccess(result);
+      final PaginationMeta paginationMeta = PaginationMeta(
+        count: response.data['count'],
+        next: response.data['next'],
+        previous: response.data['previous'],
+      );
+
+      return PaginatedDataSuccess(pokemonDtos, paginationMeta);
     } on DioException catch (e) {
-      return DataFailed(e);
+      return PaginatedDataFailed(e);
     } catch (e) {
-      return DataFailed(
+      return PaginatedDataFailed(
         DioException(
           type: DioExceptionType.unknown,
           requestOptions: RequestOptions(path: ''),
