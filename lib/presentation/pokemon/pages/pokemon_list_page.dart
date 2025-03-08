@@ -7,33 +7,43 @@ import 'package:pokemon_explorer/presentation/pokemon/view_models/pokemon_list_v
 import 'package:pokemon_explorer/presentation/pokemon/widgets/pokemon_type_filter.dart';
 
 class PokemonListPage extends ConsumerWidget {
-  const PokemonListPage({super.key});
+  PokemonListPage({super.key});
+  final _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pod = ref.watch(pokemonListViewModelProvider.notifier);
     final state = ref.watch(pokemonListViewModelProvider);
+    _searchController.text = state.pokemonListFilter.pokemonName ?? '';
 
     return Scaffold(
       appBar: AppBar(title: Text('Pokémon List')),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          try {
-            context.pushNamed('pokemon',
-                pathParameters: {'pokemonName': 'pikachu'});
-          } catch (e) {
-            print(e);
-          }
-        },
-        child: Icon(Icons.visibility),
-      ),
       body: Column(
         children: [
+          TextFormField(
+            controller: _searchController,
+            onChanged: (value) {
+              _onSearchChanged(value, pod);
+            },
+            decoration: InputDecoration(
+              hintText: 'search...',
+              prefixIcon: const Icon(Icons.search),
+              suffixIcon: IconButton(
+                onPressed: () {
+                  _searchController.clear();
+                  _onSearchChanged("", pod);
+                },
+                icon: const Icon(Icons.clear),
+              ),
+              border: const OutlineInputBorder(),
+            ),
+          ),
           SizedBox(
             height: 200,
             child: PokemonTypeMainFilter(
               onChanged: (pokemonType) {
                 pod.updateSelectedPokemonType(pokemonType);
+                pod.updatePokemonSearchName(null);
                 pod.getData();
               },
             ),
@@ -47,14 +57,16 @@ class PokemonListPage extends ConsumerWidget {
                     bottom: 60, top: 10, right: 8, left: 8),
                 pagingController: state.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Pokemon>(
-                  itemBuilder: (context, pokemon, _) => ListTile(
-                    title: Text(pokemon.name),
-                    onTap: () {
-                      context.pushNamed('pokemon', pathParameters: {
-                        'pokemonName': pokemon.name,
-                      });
-                    },
-                  ),
+                  itemBuilder: (context, pokemon, int i) {
+                    return ListTile(
+                      title: Text(pokemon.name),
+                      onTap: () {
+                        context.pushNamed('pokemon', pathParameters: {
+                          'pokemonName': pokemon.name,
+                        });
+                      },
+                    );
+                  },
                   animateTransitions: true,
                 ),
               ),
@@ -63,5 +75,11 @@ class PokemonListPage extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  void _onSearchChanged(String value, PokemonListViewModel pod) {
+    pod.updatePokemonSearchName(value);
+
+    pod.getData();
   }
 }

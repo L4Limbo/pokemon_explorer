@@ -23,8 +23,6 @@ class PokemonTypeMainFilter extends ConsumerWidget {
         final isSelected =
             state.pokemonTypes[index] == state.selectedPokemonType;
 
-        final color = Theme.of(context).scaffoldBackgroundColor;
-
         return GestureDetector(
           onTap: () {
             if (state.pokemonTypes[index] != state.selectedPokemonType) {
@@ -43,11 +41,13 @@ class PokemonTypeMainFilter extends ConsumerWidget {
             height: 80,
             width: 180,
             decoration: BoxDecoration(
-              color: isSelected ? Theme.of(context).primaryColor : color,
+              color: isSelected
+                  ? Theme.of(context).scaffoldBackgroundColor
+                  : Color(state.pokemonTypes[index].color),
               border: Border.all(
                 color: isSelected
                     ? Theme.of(context).scaffoldBackgroundColor
-                    : Theme.of(context).primaryColor,
+                    : Color(state.pokemonTypes[index].color),
                 width: isSelected ? 3 : 2,
               ),
               borderRadius: BorderRadius.circular(15),
@@ -65,8 +65,8 @@ class PokemonTypeMainFilter extends ConsumerWidget {
                         fontSize: isSelected ? 18 : 16,
                         fontWeight: FontWeight.bold,
                         color: isSelected
-                            ? const Color.fromARGB(255, 255, 255, 255)
-                            : Theme.of(context).primaryColor,
+                            ? Color(state.pokemonTypes[index].color)
+                            : const Color.fromARGB(255, 255, 255, 255),
                       ),
                     ),
                   ],

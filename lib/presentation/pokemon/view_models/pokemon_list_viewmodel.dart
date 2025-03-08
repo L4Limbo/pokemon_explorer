@@ -42,7 +42,6 @@ class PokemonListViewModel extends _$PokemonListViewModel {
   }
 
   Future<void> _getPokemons() async {
-    print('=======');
     if (_pokemonListFilter.pokemonType != null) {
       _fetchPokemonsByType();
     } else {
@@ -76,6 +75,7 @@ class PokemonListViewModel extends _$PokemonListViewModel {
                 _limit,
                 _pagingController.nextPageKey!,
                 _pokemonListFilter.pokemonType!.name,
+                keyword: _pokemonListFilter.pokemonName,
               );
       if (result is PaginatedDataSuccess<List<Pokemon>>) {
         _updateData(result);
@@ -99,6 +99,8 @@ class PokemonListViewModel extends _$PokemonListViewModel {
   }
 
   void updatePokemonSearchName(String? pokemonName) {
+    _pokemonListFilter = _pokemonListFilter.copyWith(pokemonName: pokemonName);
+
     state = state.copyWith(
       pokemonListFilter: _pokemonListFilter.copyWith(pokemonName: pokemonName),
     );

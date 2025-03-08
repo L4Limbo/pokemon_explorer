@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_explorer/data/data_sources/remote/pokemon/pokemon_api_service.dart';
+import 'package:pokemon_explorer/data/dtos/pokemon_dto.dart';
 import 'package:pokemon_explorer/domain/models/data_states/data_state.dart';
 import 'package:pokemon_explorer/domain/models/data_states/data_state_types.dart';
 import 'package:pokemon_explorer/domain/models/data_states/paginated_data_state.dart';
@@ -61,7 +62,8 @@ class PokemonRepositoryImpl implements PokemonRepository {
 
   @override
   Future<PaginatedDataState<List<Pokemon>>> getPokemonsByType(
-      int limit, int nextPage, String type) async {
+      int limit, int nextPage, String type,
+      {String? keyword}) async {
     try {
       final result = await _pokemonApiService.getPokemonsByType(type);
       if (result is DataSuccess) {
@@ -75,17 +77,28 @@ class PokemonRepositoryImpl implements PokemonRepository {
             ),
           );
         }
-        final pokemons = result.data!
-            .sublist(offset, offset + limit)
-            .toList()
-            .map((dto) => dto.toPokemon())
+
+        List<Pokemon> pokemons = [];
+
+        List<PokemonDto> pokemonsFiltered = result.data!
+            .where((e) => (e.name.contains(keyword ?? '')))
             .toList();
+
+        if (pokemons.length > limit) {
+          pokemons = pokemonsFiltered
+              .sublist(offset, offset + limit)
+              .toList()
+              .map((dto) => dto.toPokemon())
+              .toList();
+        } else {
+          pokemons = pokemonsFiltered.map((dto) => dto.toPokemon()).toList();
+        }
 
         return PaginatedDataSuccess(
           pokemons,
           PaginationMeta(
-            count: result.data!.length,
-            next: offset + limit <= result.data!.length ? '' : null,
+            count: pokemonsFiltered.length,
+            next: offset + limit <= pokemonsFiltered.length ? '' : null,
           ),
         );
       } else if (result is DataFailed) {

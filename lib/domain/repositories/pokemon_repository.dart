@@ -7,6 +7,7 @@ abstract class PokemonRepository {
   Future<PaginatedDataState<List<Pokemon>>> getPokemons(
       Map<String, dynamic> queryParameters);
   Future<PaginatedDataState<List<Pokemon>>> getPokemonsByType(
-      int limit, int nextPage, String type);
+      int limit, int nextPage, String type,
+      {String? keyword});
   Future<DataState<PokemonDetails>> getPokemon(String pokemonName);
 }

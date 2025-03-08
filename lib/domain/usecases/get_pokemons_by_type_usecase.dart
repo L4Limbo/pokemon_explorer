@@ -19,9 +19,18 @@ class GetPokemonsUseCase {
   final PokemonRepository _pokemonRepository;
 
   Future<PaginatedDataState<List<Pokemon>>> getPokemonsByType(
-      int limit, int nextPage, String type) async {
+    int limit,
+    int nextPage,
+    String type, {
+    String? keyword,
+  }) async {
     try {
-      return await _pokemonRepository.getPokemonsByType(limit, nextPage, type);
+      return await _pokemonRepository.getPokemonsByType(
+        limit,
+        nextPage,
+        type,
+        keyword: keyword,
+      );
     } catch (e) {
       rethrow;
     }
