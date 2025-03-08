@@ -68,7 +68,7 @@ class PokemonRepositoryImpl implements PokemonRepository {
       final result = await _pokemonApiService.getPokemonsByType(type);
       if (result is DataSuccess) {
         int offset = _getOffsetFromCurrentPage(nextPage, limit);
-        if (offset + limit >= result.data!.length) {
+        if (offset >= result.data!.length) {
           return PaginatedDataSuccess(
             [],
             PaginationMeta(
@@ -84,9 +84,13 @@ class PokemonRepositoryImpl implements PokemonRepository {
             .where((e) => (e.name.contains(keyword ?? '')))
             .toList();
 
-        if (pokemons.length > limit) {
+        if (pokemonsFiltered.length > limit) {
           pokemons = pokemonsFiltered
-              .sublist(offset, offset + limit)
+              .sublist(
+                  offset,
+                  offset + limit > pokemonsFiltered.length
+                      ? null
+                      : offset + limit)
               .toList()
               .map((dto) => dto.toPokemon())
               .toList();
@@ -98,7 +102,7 @@ class PokemonRepositoryImpl implements PokemonRepository {
           pokemons,
           PaginationMeta(
             count: pokemonsFiltered.length,
-            next: offset + limit <= pokemonsFiltered.length ? '' : null,
+            next: offset <= pokemonsFiltered.length ? '' : null,
           ),
         );
       } else if (result is DataFailed) {
