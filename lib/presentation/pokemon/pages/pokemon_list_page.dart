@@ -20,24 +20,6 @@ class PokemonListPage extends ConsumerWidget {
       appBar: AppBar(title: Text('Pokémon List')),
       body: Column(
         children: [
-          TextFormField(
-            controller: _searchController,
-            onChanged: (value) {
-              _onSearchChanged(value, pod);
-            },
-            decoration: InputDecoration(
-              hintText: 'search...',
-              prefixIcon: const Icon(Icons.search),
-              suffixIcon: IconButton(
-                onPressed: () {
-                  _searchController.clear();
-                  _onSearchChanged("", pod);
-                },
-                icon: const Icon(Icons.clear),
-              ),
-              border: const OutlineInputBorder(),
-            ),
-          ),
           SizedBox(
             height: 200,
             child: PokemonTypeMainFilter(
@@ -48,6 +30,25 @@ class PokemonListPage extends ConsumerWidget {
               },
             ),
           ),
+          if (state.pokemonListFilter.pokemonType != null)
+            TextFormField(
+              controller: _searchController,
+              onChanged: (value) {
+                _onSearchChanged(value, pod);
+              },
+              decoration: InputDecoration(
+                hintText: 'search...',
+                prefixIcon: const Icon(Icons.search),
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    _searchController.clear();
+                    _onSearchChanged("", pod);
+                  },
+                  icon: const Icon(Icons.clear),
+                ),
+                border: const OutlineInputBorder(),
+              ),
+            ),
           Expanded(
             child: RefreshIndicator(
               onRefresh: () async => pod.getData(),
