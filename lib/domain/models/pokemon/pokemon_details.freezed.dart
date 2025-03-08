@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$PokemonDetails {
   Pokemon get pokemon => throw _privateConstructorUsedError;
   List<BasicStat> get basicStats => throw _privateConstructorUsedError;
+  List<PokemonType> get types => throw _privateConstructorUsedError;
 
   /// Create a copy of PokemonDetails
   /// with the given fields replaced by the non-null parameter values.
@@ -32,7 +33,8 @@ abstract class $PokemonDetailsCopyWith<$Res> {
           PokemonDetails value, $Res Function(PokemonDetails) then) =
       _$PokemonDetailsCopyWithImpl<$Res, PokemonDetails>;
   @useResult
-  $Res call({Pokemon pokemon, List<BasicStat> basicStats});
+  $Res call(
+      {Pokemon pokemon, List<BasicStat> basicStats, List<PokemonType> types});
 
   $PokemonCopyWith<$Res> get pokemon;
 }
@@ -54,6 +56,7 @@ class _$PokemonDetailsCopyWithImpl<$Res, $Val extends PokemonDetails>
   $Res call({
     Object? pokemon = null,
     Object? basicStats = null,
+    Object? types = null,
   }) {
     return _then(_value.copyWith(
       pokemon: null == pokemon
@@ -64,6 +67,10 @@ class _$PokemonDetailsCopyWithImpl<$Res, $Val extends PokemonDetails>
           ? _value.basicStats
           : basicStats // ignore: cast_nullable_to_non_nullable
               as List<BasicStat>,
+      types: null == types
+          ? _value.types
+          : types // ignore: cast_nullable_to_non_nullable
+              as List<PokemonType>,
     ) as $Val);
   }
 
@@ -86,7 +93,8 @@ abstract class _$$PokemonDetailsImplCopyWith<$Res>
       __$$PokemonDetailsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Pokemon pokemon, List<BasicStat> basicStats});
+  $Res call(
+      {Pokemon pokemon, List<BasicStat> basicStats, List<PokemonType> types});
 
   @override
   $PokemonCopyWith<$Res> get pokemon;
@@ -107,6 +115,7 @@ class __$$PokemonDetailsImplCopyWithImpl<$Res>
   $Res call({
     Object? pokemon = null,
     Object? basicStats = null,
+    Object? types = null,
   }) {
     return _then(_$PokemonDetailsImpl(
       pokemon: null == pokemon
@@ -117,6 +126,10 @@ class __$$PokemonDetailsImplCopyWithImpl<$Res>
           ? _value._basicStats
           : basicStats // ignore: cast_nullable_to_non_nullable
               as List<BasicStat>,
+      types: null == types
+          ? _value._types
+          : types // ignore: cast_nullable_to_non_nullable
+              as List<PokemonType>,
     ));
   }
 }
@@ -125,8 +138,11 @@ class __$$PokemonDetailsImplCopyWithImpl<$Res>
 
 class _$PokemonDetailsImpl implements _PokemonDetails {
   const _$PokemonDetailsImpl(
-      {required this.pokemon, required final List<BasicStat> basicStats})
-      : _basicStats = basicStats;
+      {required this.pokemon,
+      required final List<BasicStat> basicStats,
+      required final List<PokemonType> types})
+      : _basicStats = basicStats,
+        _types = types;
 
   @override
   final Pokemon pokemon;
@@ -138,9 +154,17 @@ class _$PokemonDetailsImpl implements _PokemonDetails {
     return EqualUnmodifiableListView(_basicStats);
   }
 
+  final List<PokemonType> _types;
+  @override
+  List<PokemonType> get types {
+    if (_types is EqualUnmodifiableListView) return _types;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_types);
+  }
+
   @override
   String toString() {
-    return 'PokemonDetails(pokemon: $pokemon, basicStats: $basicStats)';
+    return 'PokemonDetails(pokemon: $pokemon, basicStats: $basicStats, types: $types)';
   }
 
   @override
@@ -150,12 +174,16 @@ class _$PokemonDetailsImpl implements _PokemonDetails {
             other is _$PokemonDetailsImpl &&
             (identical(other.pokemon, pokemon) || other.pokemon == pokemon) &&
             const DeepCollectionEquality()
-                .equals(other._basicStats, _basicStats));
+                .equals(other._basicStats, _basicStats) &&
+            const DeepCollectionEquality().equals(other._types, _types));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, pokemon, const DeepCollectionEquality().hash(_basicStats));
+      runtimeType,
+      pokemon,
+      const DeepCollectionEquality().hash(_basicStats),
+      const DeepCollectionEquality().hash(_types));
 
   /// Create a copy of PokemonDetails
   /// with the given fields replaced by the non-null parameter values.
@@ -170,12 +198,15 @@ class _$PokemonDetailsImpl implements _PokemonDetails {
 abstract class _PokemonDetails implements PokemonDetails {
   const factory _PokemonDetails(
       {required final Pokemon pokemon,
-      required final List<BasicStat> basicStats}) = _$PokemonDetailsImpl;
+      required final List<BasicStat> basicStats,
+      required final List<PokemonType> types}) = _$PokemonDetailsImpl;
 
   @override
   Pokemon get pokemon;
   @override
   List<BasicStat> get basicStats;
+  @override
+  List<PokemonType> get types;
 
   /// Create a copy of PokemonDetails
   /// with the given fields replaced by the non-null parameter values.

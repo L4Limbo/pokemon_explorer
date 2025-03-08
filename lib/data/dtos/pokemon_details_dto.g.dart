@@ -13,6 +13,9 @@ _$PokemonDetailsDtoImpl _$$PokemonDetailsDtoImplFromJson(
       basicStats: (json['basicStats'] as List<dynamic>)
           .map((e) => BasicStatDto.fromJson(e as Map<String, dynamic>))
           .toList(),
+      types: (json['types'] as List<dynamic>)
+          .map((e) => PokemonTypeDto.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$PokemonDetailsDtoImplToJson(
@@ -20,4 +23,5 @@ Map<String, dynamic> _$$PokemonDetailsDtoImplToJson(
     <String, dynamic>{
       'pokemon': instance.pokemon,
       'basicStats': instance.basicStats,
+      'types': instance.types,
     };

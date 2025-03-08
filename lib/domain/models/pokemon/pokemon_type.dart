@@ -6,6 +6,6 @@ part 'pokemon_type.freezed.dart';
 class PokemonType with _$PokemonType {
   const factory PokemonType({
     required String name,
-    required int color,
+    int? color,
   }) = _PokemonType;
 }

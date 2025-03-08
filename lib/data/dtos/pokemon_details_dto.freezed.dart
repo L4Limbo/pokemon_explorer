@@ -22,6 +22,7 @@ PokemonDetailsDto _$PokemonDetailsDtoFromJson(Map<String, dynamic> json) {
 mixin _$PokemonDetailsDto {
   PokemonDto get pokemon => throw _privateConstructorUsedError;
   List<BasicStatDto> get basicStats => throw _privateConstructorUsedError;
+  List<PokemonTypeDto> get types => throw _privateConstructorUsedError;
 
   /// Serializes this PokemonDetailsDto to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +40,10 @@ abstract class $PokemonDetailsDtoCopyWith<$Res> {
           PokemonDetailsDto value, $Res Function(PokemonDetailsDto) then) =
       _$PokemonDetailsDtoCopyWithImpl<$Res, PokemonDetailsDto>;
   @useResult
-  $Res call({PokemonDto pokemon, List<BasicStatDto> basicStats});
+  $Res call(
+      {PokemonDto pokemon,
+      List<BasicStatDto> basicStats,
+      List<PokemonTypeDto> types});
 
   $PokemonDtoCopyWith<$Res> get pokemon;
 }
@@ -61,6 +65,7 @@ class _$PokemonDetailsDtoCopyWithImpl<$Res, $Val extends PokemonDetailsDto>
   $Res call({
     Object? pokemon = null,
     Object? basicStats = null,
+    Object? types = null,
   }) {
     return _then(_value.copyWith(
       pokemon: null == pokemon
@@ -71,6 +76,10 @@ class _$PokemonDetailsDtoCopyWithImpl<$Res, $Val extends PokemonDetailsDto>
           ? _value.basicStats
           : basicStats // ignore: cast_nullable_to_non_nullable
               as List<BasicStatDto>,
+      types: null == types
+          ? _value.types
+          : types // ignore: cast_nullable_to_non_nullable
+              as List<PokemonTypeDto>,
     ) as $Val);
   }
 
@@ -93,7 +102,10 @@ abstract class _$$PokemonDetailsDtoImplCopyWith<$Res>
       __$$PokemonDetailsDtoImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({PokemonDto pokemon, List<BasicStatDto> basicStats});
+  $Res call(
+      {PokemonDto pokemon,
+      List<BasicStatDto> basicStats,
+      List<PokemonTypeDto> types});
 
   @override
   $PokemonDtoCopyWith<$Res> get pokemon;
@@ -114,6 +126,7 @@ class __$$PokemonDetailsDtoImplCopyWithImpl<$Res>
   $Res call({
     Object? pokemon = null,
     Object? basicStats = null,
+    Object? types = null,
   }) {
     return _then(_$PokemonDetailsDtoImpl(
       pokemon: null == pokemon
@@ -124,6 +137,10 @@ class __$$PokemonDetailsDtoImplCopyWithImpl<$Res>
           ? _value._basicStats
           : basicStats // ignore: cast_nullable_to_non_nullable
               as List<BasicStatDto>,
+      types: null == types
+          ? _value._types
+          : types // ignore: cast_nullable_to_non_nullable
+              as List<PokemonTypeDto>,
     ));
   }
 }
@@ -132,8 +149,11 @@ class __$$PokemonDetailsDtoImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PokemonDetailsDtoImpl extends _PokemonDetailsDto {
   _$PokemonDetailsDtoImpl(
-      {required this.pokemon, required final List<BasicStatDto> basicStats})
+      {required this.pokemon,
+      required final List<BasicStatDto> basicStats,
+      required final List<PokemonTypeDto> types})
       : _basicStats = basicStats,
+        _types = types,
         super._();
 
   factory _$PokemonDetailsDtoImpl.fromJson(Map<String, dynamic> json) =>
@@ -149,9 +169,17 @@ class _$PokemonDetailsDtoImpl extends _PokemonDetailsDto {
     return EqualUnmodifiableListView(_basicStats);
   }
 
+  final List<PokemonTypeDto> _types;
+  @override
+  List<PokemonTypeDto> get types {
+    if (_types is EqualUnmodifiableListView) return _types;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_types);
+  }
+
   @override
   String toString() {
-    return 'PokemonDetailsDto(pokemon: $pokemon, basicStats: $basicStats)';
+    return 'PokemonDetailsDto(pokemon: $pokemon, basicStats: $basicStats, types: $types)';
   }
 
   @override
@@ -161,13 +189,17 @@ class _$PokemonDetailsDtoImpl extends _PokemonDetailsDto {
             other is _$PokemonDetailsDtoImpl &&
             (identical(other.pokemon, pokemon) || other.pokemon == pokemon) &&
             const DeepCollectionEquality()
-                .equals(other._basicStats, _basicStats));
+                .equals(other._basicStats, _basicStats) &&
+            const DeepCollectionEquality().equals(other._types, _types));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, pokemon, const DeepCollectionEquality().hash(_basicStats));
+      runtimeType,
+      pokemon,
+      const DeepCollectionEquality().hash(_basicStats),
+      const DeepCollectionEquality().hash(_types));
 
   /// Create a copy of PokemonDetailsDto
   /// with the given fields replaced by the non-null parameter values.
@@ -189,7 +221,8 @@ class _$PokemonDetailsDtoImpl extends _PokemonDetailsDto {
 abstract class _PokemonDetailsDto extends PokemonDetailsDto {
   factory _PokemonDetailsDto(
       {required final PokemonDto pokemon,
-      required final List<BasicStatDto> basicStats}) = _$PokemonDetailsDtoImpl;
+      required final List<BasicStatDto> basicStats,
+      required final List<PokemonTypeDto> types}) = _$PokemonDetailsDtoImpl;
   _PokemonDetailsDto._() : super._();
 
   factory _PokemonDetailsDto.fromJson(Map<String, dynamic> json) =
@@ -199,6 +232,8 @@ abstract class _PokemonDetailsDto extends PokemonDetailsDto {
   PokemonDto get pokemon;
   @override
   List<BasicStatDto> get basicStats;
+  @override
+  List<PokemonTypeDto> get types;
 
   /// Create a copy of PokemonDetailsDto
   /// with the given fields replaced by the non-null parameter values.

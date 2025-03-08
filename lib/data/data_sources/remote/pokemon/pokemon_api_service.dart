@@ -4,6 +4,7 @@ import 'package:pokemon_explorer/data/data_sources/remote/api_service/api_servic
 import 'package:pokemon_explorer/data/dtos/basic_stat_dto.dart';
 import 'package:pokemon_explorer/data/dtos/pokemon_details_dto.dart';
 import 'package:pokemon_explorer/data/dtos/pokemon_dto.dart';
+import 'package:pokemon_explorer/data/dtos/pokemon_type_dto.dart';
 import 'package:pokemon_explorer/domain/models/data_states/data_state.dart';
 import 'package:pokemon_explorer/domain/models/data_states/data_state_types.dart';
 import 'package:pokemon_explorer/domain/models/data_states/paginated_data_state.dart';
@@ -84,9 +85,11 @@ class PokemonApiService {
       final PokemonDto pokemonDto = PokemonDto.fromApiResponse(response.data);
       final List<BasicStatDto> basicStats = ((response.data['stats'] as List)
           .map((e) => BasicStatDto.fromApiResponse(e))).toList();
+      final List<PokemonTypeDto> types = ((response.data['types'] as List)
+          .map((e) => PokemonTypeDto.fromApiResponse(e))).toList();
 
-      final result =
-          PokemonDetailsDto(pokemon: pokemonDto, basicStats: basicStats);
+      final result = PokemonDetailsDto(
+          pokemon: pokemonDto, basicStats: basicStats, types: types);
 
       return DataSuccess(result);
     } on DioException catch (e) {
