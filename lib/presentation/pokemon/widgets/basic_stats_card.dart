@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/basic_stat.dart';
+import 'package:pokemon_explorer/presentation/pokemon/pages/pokemon_detail_page.dart';
+import 'package:pokemon_explorer/utils/extensions.dart';
 
 class BasicStatsCard extends StatelessWidget {
   const BasicStatsCard({super.key, required this.stats});
@@ -50,7 +52,7 @@ class BasicStatsCard extends StatelessWidget {
                                   style: DefaultTextStyle.of(context).style,
                                   children: [
                                     TextSpan(
-                                      text: _nameFormatter(stat.name),
+                                      text: stat.name.formatName(),
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -103,13 +105,5 @@ class BasicStatsCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _nameFormatter(String name) {
-    if (name.length == 2) return name.toUpperCase();
-    return name
-        .split('-')
-        .map((word) => word[0].toUpperCase() + word.substring(1))
-        .join(' ');
   }
 }

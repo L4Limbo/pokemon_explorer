@@ -4,7 +4,9 @@ import 'package:pokemon_explorer/domain/models/pokemon/pokemon_type.dart';
 import 'package:pokemon_explorer/domain/services/pokemon_type_service.dart';
 import 'package:pokemon_explorer/presentation/pokemon/view_models/pokemon_detail_viewmodel.dart';
 import 'package:pokemon_explorer/presentation/pokemon/widgets/basic_stats_card.dart';
+import 'package:pokemon_explorer/presentation/pokemon/widgets/pokemon_type_filter.dart';
 import 'package:pokemon_explorer/presentation/pokemon/widgets/simple_tag.dart';
+import 'package:pokemon_explorer/utils/extensions.dart';
 
 class PokemonDetailPage extends ConsumerWidget {
   final String pokemonName;
@@ -56,7 +58,7 @@ class PokemonDetailPage extends ConsumerWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 4),
                               child: Text(
-                                _nameFormatter(pokemon.name),
+                                pokemon.name.formatName(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 22,
@@ -122,9 +124,8 @@ class PokemonDetailPage extends ConsumerWidget {
                                               padding: const EdgeInsets.only(
                                                   left: 2.0, right: 8.0),
                                               child: SimpleTag(
-                                                label: _nameFormatter(
-                                                  pokemonType.name,
-                                                ),
+                                                label: pokemonType.name
+                                                    .formatName(),
                                                 backgroundColor: _getTypeColor(
                                                   allPokemonTypes,
                                                   [pokemonType],
@@ -181,12 +182,5 @@ class PokemonDetailPage extends ConsumerWidget {
     }
 
     return basicColor;
-  }
-
-  String _nameFormatter(String name) {
-    return name
-        .split('-')
-        .map((word) => word[0].toUpperCase() + word.substring(1))
-        .join(' ');
   }
 }

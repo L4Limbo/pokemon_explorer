@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon_type.dart';
 import 'package:pokemon_explorer/presentation/pokemon/view_models/pokemon_select_type_viewmodel.dart';
+import 'package:pokemon_explorer/utils/extensions.dart';
 
 class PokemonTypeMainFilter extends ConsumerWidget {
   final Function(PokemonType?) onChanged;
@@ -16,6 +18,7 @@ class PokemonTypeMainFilter extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(pokemonSelectTypeViewModelProvider);
     final pod = ref.read(pokemonSelectTypeViewModelProvider.notifier);
+
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       itemCount: state.pokemonTypes.length,
@@ -38,21 +41,17 @@ class PokemonTypeMainFilter extends ConsumerWidget {
           child: Container(
             margin: const EdgeInsets.all(8),
             padding: const EdgeInsets.all(8),
-            height: 80,
+            height: 50,
             width: 180,
             decoration: BoxDecoration(
-              color: isSelected
-                  ? Theme.of(context).scaffoldBackgroundColor
+              color: !isSelected
+                  ? Color(state.pokemonTypes[index].color!).withOpacity(0.8)
                   : state.pokemonTypes[index].color != null
                       ? Color(state.pokemonTypes[index].color!)
                       : null,
               border: Border.all(
-                color: isSelected
-                    ? Theme.of(context).scaffoldBackgroundColor
-                    : state.pokemonTypes[index].color != null
-                        ? Color(state.pokemonTypes[index].color!)
-                        : Color(0xFF000000),
-                width: isSelected ? 3 : 2,
+                color: Colors.white,
+                width: isSelected ? 6 : 1,
               ),
               borderRadius: BorderRadius.circular(15),
             ),
@@ -63,17 +62,23 @@ class PokemonTypeMainFilter extends ConsumerWidget {
                 Row(
                   children: [
                     Text(
-                      state.pokemonTypes[index].name,
+                      state.pokemonTypes[index].name.formatName(),
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                        fontSize: isSelected ? 18 : 16,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: isSelected
-                            ? state.pokemonTypes[index].color != null
-                                ? Color(state.pokemonTypes[index].color!)
-                                : const Color.fromARGB(255, 255, 255, 255)
-                            : null,
+                        color: Colors.white,
                       ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/icons/${state.pokemonTypes[index].name}.svg',
+                      height: 30,
+                      width: 30,
                     ),
                   ],
                 ),
