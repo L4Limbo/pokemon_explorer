@@ -4,7 +4,6 @@ import 'package:pokemon_explorer/domain/models/data_states/data_state_types.dart
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon_list_filter.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon_type.dart';
-import 'package:pokemon_explorer/domain/services/pokemon_type_service.dart';
 import 'package:pokemon_explorer/domain/usecases/get_pokemons_by_type_usecase.dart';
 import 'package:pokemon_explorer/domain/usecases/get_pokemons_usecase.dart';
 import 'package:pokemon_explorer/presentation/pokemon/states/pokemon_list_state.dart';
