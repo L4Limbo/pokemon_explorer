@@ -12,5 +12,12 @@ class AppTheme {
   static ThemeData lightTheme() => ThemeData(
         scaffoldBackgroundColor: scaffoldBackgroundColor,
         primaryColor: primaryColor,
+        appBarTheme: const AppBarTheme(
+          iconTheme: IconThemeData(color: scaffoldBackgroundColor),
+          titleTextStyle:
+              TextStyle(color: scaffoldBackgroundColor, fontSize: 20),
+          backgroundColor: primaryColor,
+          elevation: 0,
+        ),
       );
 }

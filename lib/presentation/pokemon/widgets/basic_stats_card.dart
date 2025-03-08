@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:icons_launcher/cli_commands.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/basic_stat.dart';
 
 class BasicStatsCard extends StatelessWidget {
@@ -66,12 +65,12 @@ class BasicStatsCard extends StatelessWidget {
                                     const EdgeInsets.symmetric(horizontal: 8),
                                 child: LinearProgressIndicator(
                                   borderRadius: BorderRadius.circular(20),
-                                  value: stat.value / 255,
+                                  value: stat.value / 200,
                                   minHeight: 16,
                                   backgroundColor: Colors.white,
-                                  color: stat.value / 255 < 0.2
+                                  color: stat.value / 200 < 0.2
                                       ? Colors.red
-                                      : stat.value / 255 < 0.5
+                                      : stat.value / 200 < 0.4
                                           ? Colors.orange
                                           : Colors.green,
                                 ),
