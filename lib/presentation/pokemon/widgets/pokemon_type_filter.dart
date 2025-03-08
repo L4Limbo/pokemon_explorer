@@ -43,11 +43,15 @@ class PokemonTypeMainFilter extends ConsumerWidget {
             decoration: BoxDecoration(
               color: isSelected
                   ? Theme.of(context).scaffoldBackgroundColor
-                  : Color(state.pokemonTypes[index].color),
+                  : state.pokemonTypes[index].color != null
+                      ? Color(state.pokemonTypes[index].color!)
+                      : null,
               border: Border.all(
                 color: isSelected
                     ? Theme.of(context).scaffoldBackgroundColor
-                    : Color(state.pokemonTypes[index].color),
+                    : state.pokemonTypes[index].color != null
+                        ? Color(state.pokemonTypes[index].color!)
+                        : Color(0xFF000000),
                 width: isSelected ? 3 : 2,
               ),
               borderRadius: BorderRadius.circular(15),
@@ -65,8 +69,10 @@ class PokemonTypeMainFilter extends ConsumerWidget {
                         fontSize: isSelected ? 18 : 16,
                         fontWeight: FontWeight.bold,
                         color: isSelected
-                            ? Color(state.pokemonTypes[index].color)
-                            : const Color.fromARGB(255, 255, 255, 255),
+                            ? state.pokemonTypes[index].color != null
+                                ? Color(state.pokemonTypes[index].color!)
+                                : const Color.fromARGB(255, 255, 255, 255)
+                            : null,
                       ),
                     ),
                   ],

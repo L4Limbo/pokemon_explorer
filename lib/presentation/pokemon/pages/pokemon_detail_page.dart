@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icons_launcher/cli_commands.dart';
+import 'package:pokemon_explorer/domain/models/pokemon/pokemon_type.dart';
+import 'package:pokemon_explorer/domain/services/pokemon_type_service.dart';
 import 'package:pokemon_explorer/presentation/pokemon/view_models/pokemon_detail_viewmodel.dart';
 import 'package:pokemon_explorer/presentation/pokemon/widgets/basic_stats_card.dart';
+import 'package:pokemon_explorer/presentation/pokemon/widgets/simple_tag.dart';
 
 class PokemonDetailPage extends ConsumerWidget {
   final String pokemonName;
@@ -13,12 +15,16 @@ class PokemonDetailPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final pokemonDetailState =
         ref.watch(pokemonDetailViewModelProvider(pokemonName));
+    final allPokemonTypes = ref.watch(pokemonTypeServiceProvider);
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: pokemonDetailState.when(
         data: (pokemonData) {
           final pokemon = pokemonData.value!.pokemon;
+
+          Color basicColor =
+              _getTypeColor(allPokemonTypes, pokemonData.value!.types);
 
           return RefreshIndicator(
             onRefresh: () async {
@@ -34,18 +40,31 @@ class PokemonDetailPage extends ConsumerWidget {
                   physics: AlwaysScrollableScrollPhysics(),
                   slivers: [
                     SliverAppBar(
-                      backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
+                      backgroundColor: basicColor,
                       expandedHeight: 300,
                       floating: false,
                       pinned: true,
                       flexibleSpace: FlexibleSpaceBar(
-                        title: Text(
-                          pokemon.name.capitalize(),
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                        title: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.black54,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15))),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 4),
+                              child: Text(
+                                _nameFormatter(pokemon.name),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                         centerTitle: true,
@@ -58,8 +77,8 @@ class PokemonDetailPage extends ConsumerWidget {
                             gradient: LinearGradient(
                               colors: [
                                 Colors.black87,
-                                Colors.amber,
-                                Colors.amber,
+                                basicColor,
+                                basicColor,
                                 Theme.of(context).scaffoldBackgroundColor,
                               ],
                               stops: [0.0, 0.6, 0.3, 1.0],
@@ -67,11 +86,14 @@ class PokemonDetailPage extends ConsumerWidget {
                               begin: Alignment.topCenter,
                             ),
                           ),
-                          child: Image.network(
-                            pokemonData.value!.pokemon.imagePath!,
-                            height: 500,
-                            width: 500,
-                            fit: BoxFit.contain,
+                          child: Padding(
+                            padding: const EdgeInsets.all(32.0),
+                            child: Image.network(
+                              pokemonData.value!.pokemon.imagePath!,
+                              height: 200,
+                              width: 200,
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ),
@@ -81,6 +103,34 @@ class PokemonDetailPage extends ConsumerWidget {
                       sliver: SliverList(
                         delegate: SliverChildListDelegate(
                           [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 16),
+                              child: SizedBox(
+                                height: 50,
+                                child: ListView(
+                                  scrollDirection:
+                                      Axis.horizontal, // Make it horizontal
+                                  children: pokemonData.value!.types
+                                      .map(
+                                        (pokemonType) => Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          child: SimpleTag(
+                                            label: _nameFormatter(
+                                              pokemonType.name,
+                                            ),
+                                            backgroundColor: _getTypeColor(
+                                              allPokemonTypes,
+                                              [pokemonType],
+                                            ),
+                                            textColor: Colors.white,
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
+                              ),
+                            ),
                             Center(
                               child: BasicStatsCard(
                                 stats: pokemonData.value!.basicStats,
@@ -108,5 +158,27 @@ class PokemonDetailPage extends ConsumerWidget {
         )),
       ),
     );
+  }
+
+  Color _getTypeColor(
+      List<PokemonType> allPokemonTypes, List<PokemonType> pokemonTypes) {
+    Color basicColor = Color(0xFF000000);
+
+    if (pokemonTypes.isNotEmpty) {
+      List<PokemonType> matchingTypes =
+          allPokemonTypes.where((e) => e.name == pokemonTypes[0].name).toList();
+      if (matchingTypes.isNotEmpty) {
+        basicColor = Color(matchingTypes.first.color!);
+      }
+    }
+
+    return basicColor;
+  }
+
+  String _nameFormatter(String name) {
+    return name
+        .split('-')
+        .map((word) => word[0].toUpperCase() + word.substring(1))
+        .join(' ');
   }
 }

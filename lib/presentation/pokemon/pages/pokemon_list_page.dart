@@ -52,8 +52,10 @@ class _PokemonListPageState extends State<PokemonListPage> {
                     prefixIcon: const Icon(Icons.search),
                     suffixIcon: IconButton(
                       onPressed: () {
-                        _searchController.clear();
-                        _debouncedSearch("", pod);
+                        if (_searchController.text.isNotEmpty) {
+                          _searchController.clear();
+                          _debouncedSearch("", pod);
+                        }
                       },
                       icon: const Icon(Icons.clear),
                     ),

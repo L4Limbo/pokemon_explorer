@@ -51,7 +51,7 @@ class BasicStatsCard extends StatelessWidget {
                                   style: DefaultTextStyle.of(context).style,
                                   children: [
                                     TextSpan(
-                                      text: stat.name.capitalize(),
+                                      text: _nameFormatter(stat.name),
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -104,5 +104,13 @@ class BasicStatsCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _nameFormatter(String name) {
+    if (name.length == 2) return name.toUpperCase();
+    return name
+        .split('-')
+        .map((word) => word[0].toUpperCase() + word.substring(1))
+        .join(' ');
   }
 }

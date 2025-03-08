@@ -21,6 +21,8 @@ class PokemonDetailViewModel extends _$PokemonDetailViewModel {
   }
 
   Future<AsyncValue<PokemonDetails>> fetchPokemonDetails() async {
+    state = const AsyncValue.loading();
+
     try {
       final pokemon = await _useCase.getPokemon(_pokemonName);
 
