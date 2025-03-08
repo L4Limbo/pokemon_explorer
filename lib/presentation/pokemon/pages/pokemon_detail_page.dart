@@ -4,7 +4,6 @@ import 'package:pokemon_explorer/domain/models/pokemon/pokemon_type.dart';
 import 'package:pokemon_explorer/domain/services/pokemon_type_service.dart';
 import 'package:pokemon_explorer/presentation/pokemon/view_models/pokemon_detail_viewmodel.dart';
 import 'package:pokemon_explorer/presentation/pokemon/widgets/basic_stats_card.dart';
-import 'package:pokemon_explorer/presentation/pokemon/widgets/pokemon_type_filter.dart';
 import 'package:pokemon_explorer/presentation/pokemon/widgets/simple_tag.dart';
 import 'package:pokemon_explorer/utils/extensions.dart';
 

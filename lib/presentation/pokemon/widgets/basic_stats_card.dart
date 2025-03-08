@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/basic_stat.dart';
-import 'package:pokemon_explorer/presentation/pokemon/pages/pokemon_detail_page.dart';
 import 'package:pokemon_explorer/utils/extensions.dart';
 
 class BasicStatsCard extends StatelessWidget {

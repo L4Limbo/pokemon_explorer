@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon.dart';
-import 'package:pokemon_explorer/presentation/pokemon/pages/pokemon_detail_page.dart';
 import 'package:pokemon_explorer/presentation/pokemon/view_models/pokemon_list_viewmodel.dart';
 import 'package:pokemon_explorer/presentation/pokemon/widgets/pokemon_type_filter.dart';
 import 'package:pokemon_explorer/utils/extensions.dart';

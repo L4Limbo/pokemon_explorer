@@ -68,8 +68,6 @@ class PokemonListViewModel extends _$PokemonListViewModel {
   }
 
   Future<void> _fetchPokemonsByType() async {
-    print('------');
-
     try {
       final result =
           await ref.read(getPokemonsByTypeUseCaseProvider).getPokemonsByType(
