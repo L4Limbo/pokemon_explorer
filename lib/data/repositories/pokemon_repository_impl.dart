@@ -3,6 +3,7 @@ import 'package:pokemon_explorer/data/data_sources/remote/pokemon/pokemon_api_se
 import 'package:pokemon_explorer/domain/models/data_states/data_state.dart';
 import 'package:pokemon_explorer/domain/models/data_states/data_state_types.dart';
 import 'package:pokemon_explorer/domain/models/data_states/paginated_data_state.dart';
+import 'package:pokemon_explorer/domain/models/data_states/pagination_meta.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon_details.dart';
 import 'package:pokemon_explorer/domain/repositories/pokemon_repository.dart';
@@ -48,6 +49,45 @@ class PokemonRepositoryImpl implements PokemonRepository {
       if (result is PaginatedDataSuccess) {
         final pokemons = result.data!.map((dto) => dto.toPokemon()).toList();
         return PaginatedDataSuccess(pokemons, result.meta!);
+      } else if (result is PaginatedDataFailed) {
+        return PaginatedDataFailed(result.error!);
+      }
+
+      throw Exception('Unknown data state');
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PaginatedDataState<List<Pokemon>>> getPokemonsByType(
+      int limit, int nextPage, String type) async {
+    try {
+      final result = await _pokemonApiService.getPokemonsByType(type);
+      if (result is DataSuccess) {
+        int offset = _getOffsetFromCurrentPage(nextPage, limit);
+        if (offset + limit >= result.data!.length) {
+          return PaginatedDataSuccess(
+            [],
+            PaginationMeta(
+              count: result.data!.length,
+              next: null,
+            ),
+          );
+        }
+        final pokemons = result.data!
+            .sublist(offset, offset + limit)
+            .toList()
+            .map((dto) => dto.toPokemon())
+            .toList();
+
+        return PaginatedDataSuccess(
+          pokemons,
+          PaginationMeta(
+            count: result.data!.length,
+            next: offset + limit <= result.data!.length ? '' : null,
+          ),
+        );
       } else if (result is DataFailed) {
         return PaginatedDataFailed(result.error!);
       }
@@ -56,5 +96,9 @@ class PokemonRepositoryImpl implements PokemonRepository {
     } catch (e) {
       rethrow;
     }
+  }
+
+  int _getOffsetFromCurrentPage(int currentPage, int limit) {
+    return (currentPage - 1) * limit;
   }
 }

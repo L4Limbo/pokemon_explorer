@@ -53,6 +53,30 @@ class PokemonApiService {
     }
   }
 
+  Future<DataState<List<PokemonDto>>> getPokemonsByType(
+      String pokemonType) async {
+    try {
+      final response =
+          await _apiService.get('v2/type/$pokemonType', queryParameters: {});
+
+      final pokemonDtos = (response.data['pokemon'] as List)
+          .map((e) => PokemonDto.fromJson(e['pokemon']))
+          .toList();
+
+      return DataSuccess(pokemonDtos);
+    } on DioException catch (e) {
+      return DataFailed(e);
+    } catch (e) {
+      return DataFailed(
+        DioException(
+          type: DioExceptionType.unknown,
+          requestOptions: RequestOptions(path: ''),
+          error: 'Unexpected response',
+        ),
+      );
+    }
+  }
+
   Future<DataState<PokemonDetailsDto>> getPokemon(String pokemonName) async {
     try {
       final response = await _apiService.get('v2/pokemon/$pokemonName');
