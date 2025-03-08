@@ -103,31 +103,39 @@ class PokemonDetailPage extends ConsumerWidget {
                       sliver: SliverList(
                         delegate: SliverChildListDelegate(
                           [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 16),
-                              child: SizedBox(
-                                height: 50,
-                                child: ListView(
-                                  scrollDirection:
-                                      Axis.horizontal, // Make it horizontal
-                                  children: pokemonData.value!.types
-                                      .map(
-                                        (pokemonType) => Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8.0),
-                                          child: SimpleTag(
-                                            label: _nameFormatter(
-                                              pokemonType.name,
+                            Center(
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(maxWidth: 600),
+                                child: Card(
+                                  color: Colors.transparent,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  child: SizedBox(
+                                    height: 50,
+                                    child: ListView(
+                                      scrollDirection: Axis.horizontal,
+                                      children: pokemonData.value!.types
+                                          .map(
+                                            (pokemonType) => Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 2.0, right: 8.0),
+                                              child: SimpleTag(
+                                                label: _nameFormatter(
+                                                  pokemonType.name,
+                                                ),
+                                                backgroundColor: _getTypeColor(
+                                                  allPokemonTypes,
+                                                  [pokemonType],
+                                                ),
+                                                textColor: Colors.white,
+                                              ),
                                             ),
-                                            backgroundColor: _getTypeColor(
-                                              allPokemonTypes,
-                                              [pokemonType],
-                                            ),
-                                            textColor: Colors.white,
-                                          ),
-                                        ),
-                                      )
-                                      .toList(),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
