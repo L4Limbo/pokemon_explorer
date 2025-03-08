@@ -84,7 +84,15 @@ class PokemonRepositoryImpl implements PokemonRepository {
             .where((e) => (e.name.contains(keyword ?? '')))
             .toList();
 
-        if (pokemonsFiltered.length > limit) {
+        if (pokemonsFiltered.length < offset) {
+          return PaginatedDataSuccess(
+            pokemons,
+            PaginationMeta(
+              count: pokemonsFiltered.length,
+              next: offset <= pokemonsFiltered.length ? '' : null,
+            ),
+          );
+        } else if (pokemonsFiltered.length > limit) {
           pokemons = pokemonsFiltered
               .sublist(
                   offset,

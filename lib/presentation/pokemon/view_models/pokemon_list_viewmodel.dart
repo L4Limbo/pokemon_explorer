@@ -53,7 +53,6 @@ class PokemonListViewModel extends _$PokemonListViewModel {
     try {
       final result =
           await ref.read(getPokemonsUseCaseProvider).getPokemons(_filters());
-
       if (result is PaginatedDataSuccess<List<Pokemon>>) {
         _updateData(result);
       } else if (result is PaginatedDataFailed<List<Pokemon>>) {
@@ -69,6 +68,8 @@ class PokemonListViewModel extends _$PokemonListViewModel {
   }
 
   Future<void> _fetchPokemonsByType() async {
+    print('------');
+
     try {
       final result =
           await ref.read(getPokemonsByTypeUseCaseProvider).getPokemonsByType(

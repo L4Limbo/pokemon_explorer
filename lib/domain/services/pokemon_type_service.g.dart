@@ -7,7 +7,7 @@ part of 'pokemon_type_service.dart';
 // **************************************************************************
 
 String _$pokemonTypeServiceHash() =>
-    r'cd6e19f444dd22c0d2b1a4840133cf145de2d684';
+    r'99b7e0dcc20ae7bceb0407ea2f7beecc134c4583';
 
 /// See also [pokemonTypeService].
 @ProviderFor(pokemonTypeService)
