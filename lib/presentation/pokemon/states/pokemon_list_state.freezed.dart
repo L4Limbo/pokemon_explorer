@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$PokemonListState {
   PagingController<int, Pokemon> get pagingController =>
       throw _privateConstructorUsedError;
+  PokemonListFilter get pokemonListFilter => throw _privateConstructorUsedError;
 
   /// Create a copy of PokemonListState
   /// with the given fields replaced by the non-null parameter values.
@@ -32,7 +33,11 @@ abstract class $PokemonListStateCopyWith<$Res> {
           PokemonListState value, $Res Function(PokemonListState) then) =
       _$PokemonListStateCopyWithImpl<$Res, PokemonListState>;
   @useResult
-  $Res call({PagingController<int, Pokemon> pagingController});
+  $Res call(
+      {PagingController<int, Pokemon> pagingController,
+      PokemonListFilter pokemonListFilter});
+
+  $PokemonListFilterCopyWith<$Res> get pokemonListFilter;
 }
 
 /// @nodoc
@@ -51,13 +56,28 @@ class _$PokemonListStateCopyWithImpl<$Res, $Val extends PokemonListState>
   @override
   $Res call({
     Object? pagingController = null,
+    Object? pokemonListFilter = null,
   }) {
     return _then(_value.copyWith(
       pagingController: null == pagingController
           ? _value.pagingController
           : pagingController // ignore: cast_nullable_to_non_nullable
               as PagingController<int, Pokemon>,
+      pokemonListFilter: null == pokemonListFilter
+          ? _value.pokemonListFilter
+          : pokemonListFilter // ignore: cast_nullable_to_non_nullable
+              as PokemonListFilter,
     ) as $Val);
+  }
+
+  /// Create a copy of PokemonListState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PokemonListFilterCopyWith<$Res> get pokemonListFilter {
+    return $PokemonListFilterCopyWith<$Res>(_value.pokemonListFilter, (value) {
+      return _then(_value.copyWith(pokemonListFilter: value) as $Val);
+    });
   }
 }
 
@@ -69,7 +89,12 @@ abstract class _$$ItemListStateImplCopyWith<$Res>
       __$$ItemListStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({PagingController<int, Pokemon> pagingController});
+  $Res call(
+      {PagingController<int, Pokemon> pagingController,
+      PokemonListFilter pokemonListFilter});
+
+  @override
+  $PokemonListFilterCopyWith<$Res> get pokemonListFilter;
 }
 
 /// @nodoc
@@ -86,12 +111,17 @@ class __$$ItemListStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? pagingController = null,
+    Object? pokemonListFilter = null,
   }) {
     return _then(_$ItemListStateImpl(
       pagingController: null == pagingController
           ? _value.pagingController
           : pagingController // ignore: cast_nullable_to_non_nullable
               as PagingController<int, Pokemon>,
+      pokemonListFilter: null == pokemonListFilter
+          ? _value.pokemonListFilter
+          : pokemonListFilter // ignore: cast_nullable_to_non_nullable
+              as PokemonListFilter,
     ));
   }
 }
@@ -99,14 +129,17 @@ class __$$ItemListStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ItemListStateImpl implements _ItemListState {
-  const _$ItemListStateImpl({required this.pagingController});
+  const _$ItemListStateImpl(
+      {required this.pagingController, required this.pokemonListFilter});
 
   @override
   final PagingController<int, Pokemon> pagingController;
+  @override
+  final PokemonListFilter pokemonListFilter;
 
   @override
   String toString() {
-    return 'PokemonListState(pagingController: $pagingController)';
+    return 'PokemonListState(pagingController: $pagingController, pokemonListFilter: $pokemonListFilter)';
   }
 
   @override
@@ -115,11 +148,14 @@ class _$ItemListStateImpl implements _ItemListState {
         (other.runtimeType == runtimeType &&
             other is _$ItemListStateImpl &&
             (identical(other.pagingController, pagingController) ||
-                other.pagingController == pagingController));
+                other.pagingController == pagingController) &&
+            (identical(other.pokemonListFilter, pokemonListFilter) ||
+                other.pokemonListFilter == pokemonListFilter));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, pagingController);
+  int get hashCode =>
+      Object.hash(runtimeType, pagingController, pokemonListFilter);
 
   /// Create a copy of PokemonListState
   /// with the given fields replaced by the non-null parameter values.
@@ -132,11 +168,14 @@ class _$ItemListStateImpl implements _ItemListState {
 
 abstract class _ItemListState implements PokemonListState {
   const factory _ItemListState(
-          {required final PagingController<int, Pokemon> pagingController}) =
+          {required final PagingController<int, Pokemon> pagingController,
+          required final PokemonListFilter pokemonListFilter}) =
       _$ItemListStateImpl;
 
   @override
   PagingController<int, Pokemon> get pagingController;
+  @override
+  PokemonListFilter get pokemonListFilter;
 
   /// Create a copy of PokemonListState
   /// with the given fields replaced by the non-null parameter values.

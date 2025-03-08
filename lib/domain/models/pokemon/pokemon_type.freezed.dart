@@ -18,7 +18,6 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$PokemonType {
   String get name => throw _privateConstructorUsedError;
   int get color => throw _privateConstructorUsedError;
-  String get icon => throw _privateConstructorUsedError;
 
   /// Create a copy of PokemonType
   /// with the given fields replaced by the non-null parameter values.
@@ -33,7 +32,7 @@ abstract class $PokemonTypeCopyWith<$Res> {
           PokemonType value, $Res Function(PokemonType) then) =
       _$PokemonTypeCopyWithImpl<$Res, PokemonType>;
   @useResult
-  $Res call({String name, int color, String icon});
+  $Res call({String name, int color});
 }
 
 /// @nodoc
@@ -53,7 +52,6 @@ class _$PokemonTypeCopyWithImpl<$Res, $Val extends PokemonType>
   $Res call({
     Object? name = null,
     Object? color = null,
-    Object? icon = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -64,10 +62,6 @@ class _$PokemonTypeCopyWithImpl<$Res, $Val extends PokemonType>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as int,
-      icon: null == icon
-          ? _value.icon
-          : icon // ignore: cast_nullable_to_non_nullable
-              as String,
     ) as $Val);
   }
 }
@@ -80,7 +74,7 @@ abstract class _$$PokemonTypeImplCopyWith<$Res>
       __$$PokemonTypeImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, int color, String icon});
+  $Res call({String name, int color});
 }
 
 /// @nodoc
@@ -98,7 +92,6 @@ class __$$PokemonTypeImplCopyWithImpl<$Res>
   $Res call({
     Object? name = null,
     Object? color = null,
-    Object? icon = null,
   }) {
     return _then(_$PokemonTypeImpl(
       name: null == name
@@ -109,10 +102,6 @@ class __$$PokemonTypeImplCopyWithImpl<$Res>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as int,
-      icon: null == icon
-          ? _value.icon
-          : icon // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -120,19 +109,16 @@ class __$$PokemonTypeImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$PokemonTypeImpl implements _PokemonType {
-  const _$PokemonTypeImpl(
-      {required this.name, required this.color, required this.icon});
+  const _$PokemonTypeImpl({required this.name, required this.color});
 
   @override
   final String name;
   @override
   final int color;
-  @override
-  final String icon;
 
   @override
   String toString() {
-    return 'PokemonType(name: $name, color: $color, icon: $icon)';
+    return 'PokemonType(name: $name, color: $color)';
   }
 
   @override
@@ -141,12 +127,11 @@ class _$PokemonTypeImpl implements _PokemonType {
         (other.runtimeType == runtimeType &&
             other is _$PokemonTypeImpl &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.color, color) || other.color == color) &&
-            (identical(other.icon, icon) || other.icon == icon));
+            (identical(other.color, color) || other.color == color));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, name, color, icon);
+  int get hashCode => Object.hash(runtimeType, name, color);
 
   /// Create a copy of PokemonType
   /// with the given fields replaced by the non-null parameter values.
@@ -160,15 +145,12 @@ class _$PokemonTypeImpl implements _PokemonType {
 abstract class _PokemonType implements PokemonType {
   const factory _PokemonType(
       {required final String name,
-      required final int color,
-      required final String icon}) = _$PokemonTypeImpl;
+      required final int color}) = _$PokemonTypeImpl;
 
   @override
   String get name;
   @override
   int get color;
-  @override
-  String get icon;
 
   /// Create a copy of PokemonType
   /// with the given fields replaced by the non-null parameter values.

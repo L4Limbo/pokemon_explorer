@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pokemon_explorer/config/environment/app_env.dart';
 import 'package:pokemon_explorer/config/routes/router.dart';
 import 'package:pokemon_explorer/config/theme/app_theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  AppEnv().init(host: 'https://pokeapi.co');
 
   runApp(
     ProviderScope(

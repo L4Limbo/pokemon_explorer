@@ -1,5 +1,6 @@
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pokemon_explorer/presentation/pokemon/pages/pokemon_detail_page.dart';
+import 'package:pokemon_explorer/presentation/pokemon/pages/pokemon_list_page.dart';
 
 final router = GoRouter(
   initialLocation: '/pokemons',
@@ -9,9 +10,7 @@ final router = GoRouter(
       path: '/pokemons',
       redirect: (context, state) => '/pokemons',
       builder: (context, state) {
-        return Center(
-          child: Text('pokemons'),
-        );
+        return PokemonListPage();
       },
     ),
     GoRoute(
@@ -19,7 +18,7 @@ final router = GoRouter(
       path: '/pokemons/:pokemonName',
       builder: (context, state) {
         final pokemonName = state.pathParameters['pokemonName']!;
-        return Center(child: Text('pokemon: $pokemonName'));
+        return PokemonDetailPage(pokemonName: pokemonName);
       },
     ),
   ],
