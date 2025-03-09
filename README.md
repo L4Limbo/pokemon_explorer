@@ -37,8 +37,9 @@ To run this project locally, follow these steps:
 
 ### Prerequisites
 
-- Flutter SDK
-- Dart
+- Flutter SDK (3.24.5)
+- Dart (3.5.4)
+- DevTools (2.37.3)
 - An IDE (e.g., Visual Studio Code or Android Studio)
 
 ### Clone the repository
