@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pokemon_explorer/domain/models/pokemon/pokemon_details.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon_type.dart';
 import 'package:pokemon_explorer/domain/services/pokemon_type_service.dart';
+import 'package:pokemon_explorer/presentation/core/widgets/error_retry_widget.dart';
 import 'package:pokemon_explorer/presentation/pokemon/view_models/pokemon_detail_viewmodel.dart';
 import 'package:pokemon_explorer/presentation/pokemon/widgets/basic_stats_card.dart';
+import 'package:pokemon_explorer/presentation/pokemon/widgets/pokemon_details_app_bar.dart';
 import 'package:pokemon_explorer/presentation/pokemon/widgets/simple_tag.dart';
 import 'package:pokemon_explorer/utils/extensions.dart';
 
@@ -22,10 +25,8 @@ class PokemonDetailPage extends ConsumerWidget {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: pokemonDetailState.when(
         data: (pokemonData) {
-          final pokemon = pokemonData.value!.pokemon;
-
-          Color basicColor =
-              _getTypeColor(allPokemonTypes, pokemonData.value!.types);
+          final pokemon = pokemonData.pokemon;
+          Color basicColor = _getTypeColor(allPokemonTypes, pokemonData.types);
 
           return RefreshIndicator(
             onRefresh: () async {
@@ -40,110 +41,15 @@ class PokemonDetailPage extends ConsumerWidget {
                 body: CustomScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
                   slivers: [
-                    SliverAppBar(
-                      backgroundColor: basicColor,
-                      expandedHeight: 300,
-                      floating: false,
-                      pinned: true,
-                      flexibleSpace: FlexibleSpaceBar(
-                        title: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black54,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15))),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              child: Text(
-                                pokemon.name.formatName(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        centerTitle: true,
-                        background: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(0),
-                              bottomRight: Radius.circular(0),
-                            ),
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.black87,
-                                basicColor,
-                                basicColor,
-                                Theme.of(context).scaffoldBackgroundColor,
-                              ],
-                              stops: [0.0, 0.6, 0.3, 1.0],
-                              end: Alignment.bottomCenter,
-                              begin: Alignment.topCenter,
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(32.0),
-                            child: Image.network(
-                              pokemonData.value!.pokemon.imagePath!,
-                              height: 200,
-                              width: 200,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    PokemonDetailsAppBar(
+                        basicColor: basicColor, pokemon: pokemon),
                     SliverPadding(
                       padding: EdgeInsets.all(16),
                       sliver: SliverList(
                         delegate: SliverChildListDelegate(
                           [
-                            Center(
-                              child: ConstrainedBox(
-                                constraints: BoxConstraints(maxWidth: 600),
-                                child: Card(
-                                  color: Colors.transparent,
-                                  elevation: 0,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  child: SizedBox(
-                                    height: 50,
-                                    child: ListView(
-                                      scrollDirection: Axis.horizontal,
-                                      children: pokemonData.value!.types
-                                          .map(
-                                            (pokemonType) => Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 2.0, right: 8.0),
-                                              child: SimpleTag(
-                                                label: pokemonType.name
-                                                    .formatName(),
-                                                backgroundColor: _getTypeColor(
-                                                  allPokemonTypes,
-                                                  [pokemonType],
-                                                ),
-                                                textColor: Colors.white,
-                                              ),
-                                            ),
-                                          )
-                                          .toList(),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: BasicStatsCard(
-                                stats: pokemonData.value!.basicStats,
-                              ),
-                            ),
+                            _typeTags(pokemonData, allPokemonTypes),
+                            _basicStats(pokemonData),
                           ],
                         ),
                       ),
@@ -154,16 +60,141 @@ class PokemonDetailPage extends ConsumerWidget {
             ),
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(
-            child: TextButton(
-          onPressed: () async {
-            await ref
-                .read(pokemonDetailViewModelProvider(pokemonName).notifier)
-                .fetchPokemonDetails();
-          },
-          child: Text('Try again'),
-        )),
+        loading: () => _loading(),
+        error: (error, stackTrace) {
+          return CustomScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            slivers: [
+              _noPokemonAppBar(context),
+              SliverPadding(
+                padding: EdgeInsets.all(16),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      _errorMessageCard(error, ref),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Center _errorMessageCard(Object error, WidgetRef ref) {
+    return Center(
+      child: ErrorRetryWidget(
+        errorMessage: error.toString(),
+        onRetry: () async {
+          await ref
+              .read(pokemonDetailViewModelProvider(pokemonName).notifier)
+              .fetchPokemonDetails();
+        },
+      ),
+    );
+  }
+
+  SliverAppBar _noPokemonAppBar(BuildContext context) {
+    return SliverAppBar(
+      backgroundColor: Theme.of(context).primaryColor,
+      expandedHeight: 300,
+      floating: false,
+      pinned: true,
+      flexibleSpace: FlexibleSpaceBar(
+        title: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Text(
+              'This Pokémon can\'t be caught'.toString(),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+        centerTitle: true,
+        background: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(0),
+              bottomRight: Radius.circular(0),
+            ),
+            gradient: LinearGradient(
+              colors: [
+                Colors.black87,
+                Theme.of(context).primaryColor,
+                Theme.of(context).primaryColor,
+                Theme.of(context).scaffoldBackgroundColor,
+              ],
+              stops: [0.0, 0.6, 0.3, 1.0],
+              end: Alignment.bottomCenter,
+              begin: Alignment.topCenter,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Center _loading() {
+    return const Center(
+      child: CircularProgressIndicator(
+        strokeWidth: 6,
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
+      ),
+    );
+  }
+
+  Center _basicStats(PokemonDetails pokemonData) {
+    return Center(
+      child: BasicStatsCard(
+        stats: pokemonData.basicStats,
+      ),
+    );
+  }
+
+  Center _typeTags(
+      PokemonDetails pokemonData, List<PokemonType> allPokemonTypes) {
+    return Center(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: 600),
+        child: Card(
+          color: Colors.transparent,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: SizedBox(
+            height: 50,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: pokemonData.types
+                  .map(
+                    (pokemonType) => Padding(
+                      padding: const EdgeInsets.only(left: 2.0, right: 8.0),
+                      child: SimpleTag(
+                        label: pokemonType.name.formatName(),
+                        backgroundColor: _getTypeColor(
+                          allPokemonTypes,
+                          [pokemonType],
+                        ),
+                        textColor: Colors.white,
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
+        ),
       ),
     );
   }
