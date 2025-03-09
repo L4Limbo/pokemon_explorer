@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pokemon_explorer/domain/models/pokemon/pokemon_type.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import 'package:pokemon_explorer/domain/models/pokemon/pokemon_type.dart';
 
 part 'pokemon_type_service.g.dart';
 

@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:pokemon_explorer/data/data_sources/remote/api_service/api_service.dart';
 import 'package:pokemon_explorer/data/dtos/basic_stat_dto.dart';
 import 'package:pokemon_explorer/data/dtos/pokemon_details_dto.dart';
@@ -9,7 +11,7 @@ import 'package:pokemon_explorer/domain/models/data_states/data_state.dart';
 import 'package:pokemon_explorer/domain/models/data_states/data_state_types.dart';
 import 'package:pokemon_explorer/domain/models/data_states/paginated_data_state.dart';
 import 'package:pokemon_explorer/domain/models/data_states/pagination_meta.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:pokemon_explorer/utils/constants.dart';
 
 part 'pokemon_api_service.g.dart';
 
@@ -48,7 +50,7 @@ class PokemonApiService {
         DioException(
           type: DioExceptionType.unknown,
           requestOptions: RequestOptions(path: ''),
-          error: 'Unexpected response',
+          error: ErrorMessages.unexpectedError,
         ),
       );
     }
@@ -72,7 +74,7 @@ class PokemonApiService {
         DioException(
           type: DioExceptionType.unknown,
           requestOptions: RequestOptions(path: ''),
-          error: 'Unexpected response',
+          error: ErrorMessages.unexpectedError,
         ),
       );
     }
@@ -99,7 +101,7 @@ class PokemonApiService {
         DioException(
           type: DioExceptionType.unknown,
           requestOptions: RequestOptions(path: ''),
-          error: 'Unexpected response',
+          error: ErrorMessages.unexpectedError,
         ),
       );
     }

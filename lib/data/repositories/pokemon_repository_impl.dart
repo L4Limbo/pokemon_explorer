@@ -1,4 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pokemon_explorer/utils/constants.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 import 'package:pokemon_explorer/data/data_sources/remote/pokemon/pokemon_api_service.dart';
 import 'package:pokemon_explorer/data/dtos/pokemon_dto.dart';
 import 'package:pokemon_explorer/domain/models/data_states/data_state.dart';
@@ -8,7 +11,6 @@ import 'package:pokemon_explorer/domain/models/data_states/pagination_meta.dart'
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon_details.dart';
 import 'package:pokemon_explorer/domain/repositories/pokemon_repository.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'pokemon_repository_impl.g.dart';
 
@@ -35,7 +37,7 @@ class PokemonRepositoryImpl implements PokemonRepository {
         return DataFailed(result.error!);
       }
 
-      throw Exception('Unknown data state');
+      throw Exception(ErrorMessages.unexpectedError);
     } catch (e) {
       rethrow;
     }
@@ -54,7 +56,7 @@ class PokemonRepositoryImpl implements PokemonRepository {
         return PaginatedDataFailed(result.error!);
       }
 
-      throw Exception('Unknown data state');
+      throw Exception(ErrorMessages.unexpectedError);
     } catch (e) {
       rethrow;
     }
@@ -66,6 +68,7 @@ class PokemonRepositoryImpl implements PokemonRepository {
       {String? keyword}) async {
     try {
       final result = await _pokemonApiService.getPokemonsByType(type);
+
       if (result is DataSuccess) {
         int offset = _getOffsetFromCurrentPage(nextPage, limit);
         if (offset >= result.data!.length) {
@@ -79,7 +82,6 @@ class PokemonRepositoryImpl implements PokemonRepository {
         }
 
         List<Pokemon> pokemons = [];
-
         List<PokemonDto> pokemonsFiltered =
             _normalizeFilterAndSearch(result, keyword);
 
@@ -116,7 +118,7 @@ class PokemonRepositoryImpl implements PokemonRepository {
         return PaginatedDataFailed(result.error!);
       }
 
-      throw Exception('Unknown data state');
+      throw Exception(ErrorMessages.unexpectedError);
     } catch (e) {
       rethrow;
     }
@@ -127,7 +129,6 @@ class PokemonRepositoryImpl implements PokemonRepository {
     return result.data!.where((e) {
       var processedKeyword =
           (keyword ?? '').replaceAll(RegExp(r'\s+'), ' ').trim();
-
       var words = processedKeyword.split(' ');
 
       return words

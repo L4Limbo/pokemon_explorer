@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pokemon_explorer/config/environment/app_env.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import 'package:pokemon_explorer/config/environment/app_env.dart';
+import 'package:pokemon_explorer/utils/constants.dart';
 
 part 'api_service.g.dart';
 
@@ -28,8 +30,7 @@ class ApiService {
             requestOptions: response.requestOptions,
             response: response,
             type: DioExceptionType.badResponse,
-            error:
-                'Unexpected response: ${response.statusCode}, ${response.data}',
+            error: ErrorMessages.unexpectedError,
           ));
         }
       },
@@ -48,34 +49,32 @@ class ApiService {
   }
 
   String _handleDioException(DioException error) {
-    String errorMessage;
+    String errorMessage = ErrorMessages.unexpectedError;
 
     switch (error.type) {
       case DioExceptionType.cancel:
-        errorMessage = 'Request to API server was cancelled';
+        errorMessage = ErrorMessages.requestCancelled;
         break;
       case DioExceptionType.connectionTimeout:
-        errorMessage = 'Connection timeout with API server';
+        errorMessage = ErrorMessages.connectionTimeout;
         break;
       case DioExceptionType.sendTimeout:
-        errorMessage = 'Send timeout in connection with API server';
+        errorMessage = ErrorMessages.sendTimeout;
         break;
       case DioExceptionType.receiveTimeout:
-        errorMessage = 'Receive timeout in connection with API server';
+        errorMessage = ErrorMessages.receiveTimeout;
         break;
       case DioExceptionType.badResponse:
-        errorMessage =
-            'Received invalid status code: ${error.response?.statusCode}';
+        errorMessage = ErrorMessages.badResponse;
         break;
       case DioExceptionType.unknown:
-        errorMessage = 'Unexpected error occurred: ${error.message}';
+        errorMessage = ErrorMessages.unexpectedError;
         break;
       case DioExceptionType.badCertificate:
-        errorMessage = 'The server certificate is invalid or untrusted';
+        errorMessage = ErrorMessages.badCertificate;
         break;
       case DioExceptionType.connectionError:
-        errorMessage =
-            'Failed to connect to the server. Check your internet connection';
+        errorMessage = ErrorMessages.connectionError;
         break;
     }
 

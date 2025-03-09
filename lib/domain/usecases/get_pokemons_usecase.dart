@@ -1,9 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 import 'package:pokemon_explorer/data/repositories/pokemon_repository_impl.dart';
 import 'package:pokemon_explorer/domain/models/data_states/paginated_data_state.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon.dart';
 import 'package:pokemon_explorer/domain/repositories/pokemon_repository.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'get_pokemons_usecase.g.dart';
 
