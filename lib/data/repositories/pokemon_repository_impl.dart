@@ -80,9 +80,8 @@ class PokemonRepositoryImpl implements PokemonRepository {
 
         List<Pokemon> pokemons = [];
 
-        List<PokemonDto> pokemonsFiltered = result.data!
-            .where((e) => (e.name.contains(keyword ?? '')))
-            .toList();
+        List<PokemonDto> pokemonsFiltered =
+            _normalizeFilterAndSearch(result, keyword);
 
         if (pokemonsFiltered.length < offset) {
           return PaginatedDataSuccess(
@@ -121,6 +120,19 @@ class PokemonRepositoryImpl implements PokemonRepository {
     } catch (e) {
       rethrow;
     }
+  }
+
+  List<PokemonDto> _normalizeFilterAndSearch(
+      DataState<List<PokemonDto>> result, String? keyword) {
+    return result.data!.where((e) {
+      var processedKeyword =
+          (keyword ?? '').replaceAll(RegExp(r'\s+'), ' ').trim();
+
+      var words = processedKeyword.split(' ');
+
+      return words
+          .every((word) => e.name.toLowerCase().contains(word.toLowerCase()));
+    }).toList();
   }
 
   int _getOffsetFromCurrentPage(int currentPage, int limit) {
