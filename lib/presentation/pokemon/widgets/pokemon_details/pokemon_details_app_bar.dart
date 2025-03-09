@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon.dart';
 import 'package:pokemon_explorer/utils/extensions.dart';
 
@@ -61,12 +62,14 @@ class PokemonDetailsAppBar extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(32.0),
-            child: Image.network(
-              pokemon.imagePath!,
-              height: 200,
-              width: 200,
-              fit: BoxFit.contain,
-            ),
+            child: pokemon.imagePath != null
+                ? Image.network(
+                    pokemon.imagePath!,
+                    height: 200,
+                    width: 200,
+                    fit: BoxFit.contain,
+                  )
+                : Image.asset('assets/images/logo.jpg'),
           ),
         ),
       ),
