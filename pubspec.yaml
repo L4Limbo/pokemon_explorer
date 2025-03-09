@@ -14,7 +14,7 @@ dependencies:
   # Router 
   go_router: ^14.8.1
 
-  # Icon Launcher
+  # Build
   icons_launcher: ^3.0.1
 
   # Local Storage
@@ -61,3 +61,11 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+
+icons_launcher:
+  image_path: "assets/images/logo.jpg"
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
