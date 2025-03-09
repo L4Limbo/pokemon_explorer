@@ -81,12 +81,18 @@ class PokemonApiService {
   }
 
   Future<DataState<PokemonDetailsDto>> getPokemon(String pokemonName) async {
+    var basicStatNames = ['attack', 'defense', 'hp'];
+
     try {
       final response = await _apiService.get('v2/pokemon/$pokemonName');
 
       final PokemonDto pokemonDto = PokemonDto.fromApiResponse(response.data);
+
       final List<BasicStatDto> basicStats = ((response.data['stats'] as List)
-          .map((e) => BasicStatDto.fromApiResponse(e))).toList();
+          .map((e) => BasicStatDto.fromApiResponse(e))).toList().where((e) {
+        return basicStatNames.contains(e.name);
+      }).toList();
+
       final List<PokemonTypeDto> types = ((response.data['types'] as List)
           .map((e) => PokemonTypeDto.fromApiResponse(e))).toList();
 
