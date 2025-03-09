@@ -7,7 +7,7 @@ part of 'pokemon_detail_viewmodel.dart';
 // **************************************************************************
 
 String _$pokemonDetailViewModelHash() =>
-    r'368b153092ab015e2b2ad15779148604691f7caa';
+    r'95ad2514bd96acaab90193d29b6d169d3d7fa105';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,10 +31,10 @@ class _SystemHash {
 }
 
 abstract class _$PokemonDetailViewModel
-    extends BuildlessAutoDisposeAsyncNotifier<AsyncValue<PokemonDetails>> {
+    extends BuildlessAutoDisposeAsyncNotifier<PokemonDetails> {
   late final String pokemonName;
 
-  FutureOr<AsyncValue<PokemonDetails>> build(
+  FutureOr<PokemonDetails> build(
     String pokemonName,
   );
 }
@@ -44,8 +44,7 @@ abstract class _$PokemonDetailViewModel
 const pokemonDetailViewModelProvider = PokemonDetailViewModelFamily();
 
 /// See also [PokemonDetailViewModel].
-class PokemonDetailViewModelFamily
-    extends Family<AsyncValue<AsyncValue<PokemonDetails>>> {
+class PokemonDetailViewModelFamily extends Family<AsyncValue<PokemonDetails>> {
   /// See also [PokemonDetailViewModel].
   const PokemonDetailViewModelFamily();
 
@@ -85,7 +84,7 @@ class PokemonDetailViewModelFamily
 /// See also [PokemonDetailViewModel].
 class PokemonDetailViewModelProvider
     extends AutoDisposeAsyncNotifierProviderImpl<PokemonDetailViewModel,
-        AsyncValue<PokemonDetails>> {
+        PokemonDetails> {
   /// See also [PokemonDetailViewModel].
   PokemonDetailViewModelProvider(
     String pokemonName,
@@ -116,7 +115,7 @@ class PokemonDetailViewModelProvider
   final String pokemonName;
 
   @override
-  FutureOr<AsyncValue<PokemonDetails>> runNotifierBuild(
+  FutureOr<PokemonDetails> runNotifierBuild(
     covariant PokemonDetailViewModel notifier,
   ) {
     return notifier.build(
@@ -142,7 +141,7 @@ class PokemonDetailViewModelProvider
 
   @override
   AutoDisposeAsyncNotifierProviderElement<PokemonDetailViewModel,
-      AsyncValue<PokemonDetails>> createElement() {
+      PokemonDetails> createElement() {
     return _PokemonDetailViewModelProviderElement(this);
   }
 
@@ -164,14 +163,14 @@ class PokemonDetailViewModelProvider
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 mixin PokemonDetailViewModelRef
-    on AutoDisposeAsyncNotifierProviderRef<AsyncValue<PokemonDetails>> {
+    on AutoDisposeAsyncNotifierProviderRef<PokemonDetails> {
   /// The parameter `pokemonName` of this provider.
   String get pokemonName;
 }
 
 class _PokemonDetailViewModelProviderElement
     extends AutoDisposeAsyncNotifierProviderElement<PokemonDetailViewModel,
-        AsyncValue<PokemonDetails>> with PokemonDetailViewModelRef {
+        PokemonDetails> with PokemonDetailViewModelRef {
   _PokemonDetailViewModelProviderElement(super.provider);
 
   @override

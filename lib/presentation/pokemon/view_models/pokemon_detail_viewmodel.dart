@@ -13,14 +13,14 @@ class PokemonDetailViewModel extends _$PokemonDetailViewModel {
   late String _pokemonName;
 
   @override
-  Future<AsyncValue<PokemonDetails>> build(String pokemonName) async {
+  Future<PokemonDetails> build(String pokemonName) async {
     _getPokemonUsecase = ref.watch(getPokemonDetailUseCaseProvider);
     _pokemonName = pokemonName;
 
-    return await fetchPokemonDetails();
+    return fetchPokemonDetails();
   }
 
-  Future<AsyncValue<PokemonDetails>> fetchPokemonDetails() async {
+  Future<PokemonDetails> fetchPokemonDetails() async {
     state = const AsyncValue.loading();
 
     try {
@@ -38,13 +38,13 @@ class PokemonDetailViewModel extends _$PokemonDetailViewModel {
     }
   }
 
-  AsyncValue<PokemonDetails> _handleSuccess(DataState<PokemonDetails> pokemon) {
-    state = AsyncValue.data(AsyncData(pokemon.data!));
-    return AsyncValue.data(pokemon.data!);
+  PokemonDetails _handleSuccess(DataState<PokemonDetails> pokemon) {
+    state = AsyncValue.data(pokemon.data!);
+    return pokemon.data!;
   }
 
-  AsyncValue<PokemonDetails> _handleError(String error) {
-    state = AsyncValue.error(error, StackTrace.empty);
-    return AsyncValue.error(error, StackTrace.empty);
+  PokemonDetails _handleError(String errorMessage) {
+    state = AsyncValue.error(errorMessage, StackTrace.empty);
+    throw Exception(errorMessage);
   }
 }
