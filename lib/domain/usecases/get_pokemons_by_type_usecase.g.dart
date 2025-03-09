@@ -7,12 +7,12 @@ part of 'get_pokemons_by_type_usecase.dart';
 // **************************************************************************
 
 String _$getPokemonsByTypeUseCaseHash() =>
-    r'80765a948a5e58d9aceae3f36009782623bb8c41';
+    r'71cacf4d19e90eddba176496a59933ef93fa981f';
 
 /// See also [getPokemonsByTypeUseCase].
 @ProviderFor(getPokemonsByTypeUseCase)
 final getPokemonsByTypeUseCaseProvider =
-    AutoDisposeProvider<GetPokemonsUseCase>.internal(
+    AutoDisposeProvider<GetPokemonsByTypeUseCase>.internal(
   getPokemonsByTypeUseCase,
   name: r'getPokemonsByTypeUseCaseProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -25,6 +25,6 @@ final getPokemonsByTypeUseCaseProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef GetPokemonsByTypeUseCaseRef
-    = AutoDisposeProviderRef<GetPokemonsUseCase>;
+    = AutoDisposeProviderRef<GetPokemonsByTypeUseCase>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

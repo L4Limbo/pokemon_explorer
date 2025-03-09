@@ -8,13 +8,13 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'get_pokemons_by_type_usecase.g.dart';
 
 @riverpod
-GetPokemonsUseCase getPokemonsByTypeUseCase(Ref ref) {
+GetPokemonsByTypeUseCase getPokemonsByTypeUseCase(Ref ref) {
   final pokemonRepository = ref.watch(pokemonRepositoryProvider);
-  return GetPokemonsUseCase(pokemonRepository);
+  return GetPokemonsByTypeUseCase(pokemonRepository);
 }
 
-class GetPokemonsUseCase {
-  GetPokemonsUseCase(this._pokemonRepository);
+class GetPokemonsByTypeUseCase {
+  GetPokemonsByTypeUseCase(this._pokemonRepository);
 
   final PokemonRepository _pokemonRepository;
 

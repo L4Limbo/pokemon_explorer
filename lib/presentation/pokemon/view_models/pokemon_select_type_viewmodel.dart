@@ -8,11 +8,14 @@ part 'pokemon_select_type_viewmodel.g.dart';
 @riverpod
 class PokemonSelectTypeViewModel extends _$PokemonSelectTypeViewModel {
   PokemonType? _selectedPokemonType;
+  List<PokemonType> _pokemonTypeService = [];
 
   @override
   PokemonSelectTypeState build() {
+    _pokemonTypeService = ref.read(pokemonTypeServiceProvider);
+
     return PokemonSelectTypeState(
-      ref.read(pokemonTypeServiceProvider),
+      _pokemonTypeService,
       selectedPokemonType: _selectedPokemonType,
     );
   }

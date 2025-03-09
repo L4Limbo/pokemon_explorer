@@ -7,7 +7,7 @@ part of 'pokemon_list_viewmodel.dart';
 // **************************************************************************
 
 String _$pokemonListViewModelHash() =>
-    r'1231e940d5ce3defa42cfe7823b92ba93efc342b';
+    r'ececed5d6dc75a0ea9bb908bd4498189cc31aaa0';
 
 /// See also [PokemonListViewModel].
 @ProviderFor(PokemonListViewModel)

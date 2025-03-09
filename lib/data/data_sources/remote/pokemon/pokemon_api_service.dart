@@ -51,6 +51,7 @@ class PokemonApiService {
           type: DioExceptionType.unknown,
           requestOptions: RequestOptions(path: ''),
           error: ErrorMessages.unexpectedError,
+          message: ErrorMessages.unexpectedError,
         ),
       );
     }
@@ -75,6 +76,7 @@ class PokemonApiService {
           type: DioExceptionType.unknown,
           requestOptions: RequestOptions(path: ''),
           error: ErrorMessages.unexpectedError,
+          message: ErrorMessages.unexpectedError,
         ),
       );
     }
@@ -108,6 +110,7 @@ class PokemonApiService {
           type: DioExceptionType.unknown,
           requestOptions: RequestOptions(path: ''),
           error: ErrorMessages.unexpectedError,
+          message: ErrorMessages.unexpectedError,
         ),
       );
     }

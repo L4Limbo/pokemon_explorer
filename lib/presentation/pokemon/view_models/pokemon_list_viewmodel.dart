@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'package:pokemon_explorer/utils/constants.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+
 import 'package:pokemon_explorer/domain/models/data_states/data_state_types.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon_list_filter.dart';
@@ -7,7 +10,6 @@ import 'package:pokemon_explorer/domain/models/pokemon/pokemon_type.dart';
 import 'package:pokemon_explorer/domain/usecases/get_pokemons_by_type_usecase.dart';
 import 'package:pokemon_explorer/domain/usecases/get_pokemons_usecase.dart';
 import 'package:pokemon_explorer/presentation/pokemon/states/pokemon_list_state.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'pokemon_list_viewmodel.g.dart';
 
@@ -17,8 +19,14 @@ class PokemonListViewModel extends _$PokemonListViewModel {
   PokemonListFilter _pokemonListFilter = PokemonListFilter();
   final _limit = 10;
 
+  late GetPokemonsUseCase _getPokemonsUsecase;
+  late GetPokemonsByTypeUseCase _getPokemonsByTypeUsecase;
+
   @override
   PokemonListState build() {
+    _getPokemonsUsecase = ref.watch(getPokemonsUseCaseProvider);
+    _getPokemonsByTypeUsecase = ref.watch(getPokemonsByTypeUseCaseProvider);
+
     _init();
 
     return PokemonListState(
@@ -37,7 +45,6 @@ class PokemonListViewModel extends _$PokemonListViewModel {
           _getOffsetFromCurrentPage(_pagingController.nextPageKey!, _limit),
       'limit': _limit,
     };
-
     return filters;
   }
 
@@ -51,17 +58,16 @@ class PokemonListViewModel extends _$PokemonListViewModel {
 
   Future<void> _fetchPokemons() async {
     try {
-      final result =
-          await ref.read(getPokemonsUseCaseProvider).getPokemons(_filters());
+      final result = await _getPokemonsUsecase.getPokemons(_filters());
       if (result is PaginatedDataSuccess<List<Pokemon>>) {
         _updateData(result);
-      } else if (result is PaginatedDataFailed<List<Pokemon>>) {
-        _setError(result.error!.response!.statusCode.toString());
+      } else if (result is PaginatedDataFailed) {
+        _setError(result.error!.message.toString());
       } else {
-        _setError('Unknown error occurred');
+        _setError(ErrorMessages.unexpectedError);
       }
     } catch (e) {
-      _pagingController.error = e;
+      _pagingController.error = ErrorMessages.unexpectedError;
     }
 
     state = state.copyWith(pagingController: _pagingController);
@@ -69,22 +75,21 @@ class PokemonListViewModel extends _$PokemonListViewModel {
 
   Future<void> _fetchPokemonsByType() async {
     try {
-      final result =
-          await ref.read(getPokemonsByTypeUseCaseProvider).getPokemonsByType(
-                _limit,
-                _pagingController.nextPageKey!,
-                _pokemonListFilter.pokemonType!.name,
-                keyword: _pokemonListFilter.pokemonName,
-              );
+      final result = await _getPokemonsByTypeUsecase.getPokemonsByType(
+        _limit,
+        _pagingController.nextPageKey!,
+        _pokemonListFilter.pokemonType!.name,
+        keyword: _pokemonListFilter.pokemonName,
+      );
       if (result is PaginatedDataSuccess<List<Pokemon>>) {
         _updateData(result);
-      } else if (result is PaginatedDataFailed<List<Pokemon>>) {
-        _setError(result.error!.response!.statusCode.toString());
+      } else if (result is PaginatedDataFailed) {
+        _setError(result.error!.message.toString());
       } else {
-        _setError('Unknown error occurred');
+        _setError(ErrorMessages.unexpectedError);
       }
     } catch (e) {
-      _pagingController.error = e;
+      _pagingController.error = ErrorMessages.unexpectedError;
     }
 
     state = state.copyWith(pagingController: _pagingController);
@@ -92,9 +97,10 @@ class PokemonListViewModel extends _$PokemonListViewModel {
 
   void updateSelectedPokemonType(PokemonType? pokemonType) {
     _pokemonListFilter = _pokemonListFilter.copyWith(pokemonType: pokemonType);
+
     state = state.copyWith(
-        pokemonListFilter:
-            _pokemonListFilter.copyWith(pokemonType: pokemonType));
+      pokemonListFilter: _pokemonListFilter.copyWith(pokemonType: pokemonType),
+    );
   }
 
   void updatePokemonSearchName(String? pokemonName) {

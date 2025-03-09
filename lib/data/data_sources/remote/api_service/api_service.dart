@@ -31,6 +31,7 @@ class ApiService {
             response: response,
             type: DioExceptionType.badResponse,
             error: ErrorMessages.unexpectedError,
+            message: ErrorMessages.unexpectedError,
           ));
         }
       },
@@ -83,6 +84,7 @@ class ApiService {
       response: error.response,
       type: error.type,
       error: errorMessage,
+      message: errorMessage,
     );
   }
 

@@ -7,7 +7,7 @@ part of 'pokemon_select_type_viewmodel.dart';
 // **************************************************************************
 
 String _$pokemonSelectTypeViewModelHash() =>
-    r'1b715b6059efee6e967d637bac1aca33249ba88f';
+    r'ddfa1820980f5a124a62e9537e6b4fbac86e23e9';
 
 /// See also [PokemonSelectTypeViewModel].
 @ProviderFor(PokemonSelectTypeViewModel)
