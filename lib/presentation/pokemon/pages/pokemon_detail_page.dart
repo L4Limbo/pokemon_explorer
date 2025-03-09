@@ -22,71 +22,74 @@ class PokemonDetailPage extends ConsumerWidget {
         ref.watch(pokemonDetailViewModelProvider(pokemonName));
     final allPokemonTypes = ref.watch(pokemonTypeServiceProvider);
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Stack(
-        children: [
-          pokemonDetailState.when(
-            data: (pokemonData) {
-              final pokemon = pokemonData.pokemon;
-              Color basicColor =
-                  _getTypeColor(allPokemonTypes, pokemonData.types);
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        body: Stack(
+          children: [
+            pokemonDetailState.when(
+              data: (pokemonData) {
+                final pokemon = pokemonData.pokemon;
+                Color basicColor =
+                    _getTypeColor(allPokemonTypes, pokemonData.types);
 
-              return RefreshIndicator(
-                onRefresh: () async {
-                  await ref
-                      .read(
-                          pokemonDetailViewModelProvider(pokemonName).notifier)
-                      .fetchPokemonDetails();
-                },
-                child: DefaultTabController(
-                  length: 1,
-                  child: Scaffold(
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    body: CustomScrollView(
-                      physics: AlwaysScrollableScrollPhysics(),
-                      slivers: [
-                        PokemonDetailsAppBar(
-                            basicColor: basicColor, pokemon: pokemon),
-                        SliverPadding(
-                          padding: EdgeInsets.all(16),
-                          sliver: SliverList(
-                            delegate: SliverChildListDelegate(
-                              [
-                                _typeTags(pokemonData, allPokemonTypes),
-                                _basicStats(pokemonData),
-                              ],
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    await ref
+                        .read(pokemonDetailViewModelProvider(pokemonName)
+                            .notifier)
+                        .fetchPokemonDetails();
+                  },
+                  child: DefaultTabController(
+                    length: 1,
+                    child: Scaffold(
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      body: CustomScrollView(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        slivers: [
+                          PokemonDetailsAppBar(
+                              basicColor: basicColor, pokemon: pokemon),
+                          SliverPadding(
+                            padding: EdgeInsets.all(16),
+                            sliver: SliverList(
+                              delegate: SliverChildListDelegate(
+                                [
+                                  _typeTags(pokemonData, allPokemonTypes),
+                                  _basicStats(pokemonData),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-            loading: () => _loading(),
-            error: (error, stackTrace) {
-              return CustomScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                slivers: [
-                  _noPokemonAppBar(context),
-                  SliverPadding(
-                    padding: EdgeInsets.all(16),
-                    sliver: SliverList(
-                      delegate: SliverChildListDelegate(
-                        [
-                          _errorMessageCard(error, ref),
                         ],
                       ),
                     ),
                   ),
-                ],
-              );
-            },
-          ),
-          Positioned(top: 0, left: 0, right: 0, child: NetworkStatusBar()),
-        ],
+                );
+              },
+              loading: () => _loading(),
+              error: (error, stackTrace) {
+                return CustomScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  slivers: [
+                    _noPokemonAppBar(context),
+                    SliverPadding(
+                      padding: EdgeInsets.all(16),
+                      sliver: SliverList(
+                        delegate: SliverChildListDelegate(
+                          [
+                            _errorMessageCard(error, ref),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+            Positioned(top: 0, left: 0, right: 0, child: NetworkStatusBar()),
+          ],
+        ),
       ),
     );
   }
