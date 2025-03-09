@@ -7,6 +7,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon.dart';
 import 'package:pokemon_explorer/presentation/core/widgets/error_retry_widget.dart';
 import 'package:pokemon_explorer/presentation/core/widgets/global_app_bar.dart';
+import 'package:pokemon_explorer/presentation/core/widgets/network_status_bar.dart';
 import 'package:pokemon_explorer/presentation/pokemon/states/pokemon_list_state.dart';
 import 'package:pokemon_explorer/presentation/pokemon/view_models/pokemon_list_viewmodel.dart';
 import 'package:pokemon_explorer/presentation/pokemon/widgets/pokemon_list/active_type_indicator.dart';
@@ -41,18 +42,23 @@ class _PokemonListPageState extends State<PokemonListPage> {
           floatingActionButton: state.pokemonListFilter.pokemonType != null
               ? ActiveTypeIndicator(state: state)
               : null,
-          body: Container(
-            decoration: state.pokemonListFilter.pokemonType != null
-                ? _backgroundDecoration(state)
-                : null,
-            child: Column(
-              children: [
-                _typeFilter(pod),
-                if (state.pokemonListFilter.pokemonType != null)
-                  _searchFilter(pod),
-                _pokemonList(pod, state),
-              ],
-            ),
+          body: Stack(
+            children: [
+              Container(
+                decoration: state.pokemonListFilter.pokemonType != null
+                    ? _backgroundDecoration(state)
+                    : null,
+                child: Column(
+                  children: [
+                    _typeFilter(pod),
+                    if (state.pokemonListFilter.pokemonType != null)
+                      _searchFilter(pod),
+                    _pokemonList(pod, state),
+                  ],
+                ),
+              ),
+              Positioned(top: 0, left: 0, right: 0, child: NetworkStatusBar()),
+            ],
           ),
         );
       },

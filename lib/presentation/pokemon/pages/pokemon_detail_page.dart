@@ -4,6 +4,7 @@ import 'package:pokemon_explorer/domain/models/pokemon/pokemon_details.dart';
 import 'package:pokemon_explorer/domain/models/pokemon/pokemon_type.dart';
 import 'package:pokemon_explorer/domain/services/pokemon_type_service.dart';
 import 'package:pokemon_explorer/presentation/core/widgets/error_retry_widget.dart';
+import 'package:pokemon_explorer/presentation/core/widgets/network_status_bar.dart';
 import 'package:pokemon_explorer/presentation/pokemon/view_models/pokemon_detail_viewmodel.dart';
 import 'package:pokemon_explorer/presentation/pokemon/widgets/pokemon_details/basic_stats_card.dart';
 import 'package:pokemon_explorer/presentation/pokemon/widgets/pokemon_details/pokemon_details_app_bar.dart';
@@ -23,62 +24,69 @@ class PokemonDetailPage extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: pokemonDetailState.when(
-        data: (pokemonData) {
-          final pokemon = pokemonData.pokemon;
-          Color basicColor = _getTypeColor(allPokemonTypes, pokemonData.types);
+      body: Stack(
+        children: [
+          pokemonDetailState.when(
+            data: (pokemonData) {
+              final pokemon = pokemonData.pokemon;
+              Color basicColor =
+                  _getTypeColor(allPokemonTypes, pokemonData.types);
 
-          return RefreshIndicator(
-            onRefresh: () async {
-              await ref
-                  .read(pokemonDetailViewModelProvider(pokemonName).notifier)
-                  .fetchPokemonDetails();
-            },
-            child: DefaultTabController(
-              length: 1,
-              child: Scaffold(
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                body: CustomScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  slivers: [
-                    PokemonDetailsAppBar(
-                        basicColor: basicColor, pokemon: pokemon),
-                    SliverPadding(
-                      padding: EdgeInsets.all(16),
-                      sliver: SliverList(
-                        delegate: SliverChildListDelegate(
-                          [
-                            _typeTags(pokemonData, allPokemonTypes),
-                            _basicStats(pokemonData),
-                          ],
+              return RefreshIndicator(
+                onRefresh: () async {
+                  await ref
+                      .read(
+                          pokemonDetailViewModelProvider(pokemonName).notifier)
+                      .fetchPokemonDetails();
+                },
+                child: DefaultTabController(
+                  length: 1,
+                  child: Scaffold(
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    body: CustomScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      slivers: [
+                        PokemonDetailsAppBar(
+                            basicColor: basicColor, pokemon: pokemon),
+                        SliverPadding(
+                          padding: EdgeInsets.all(16),
+                          sliver: SliverList(
+                            delegate: SliverChildListDelegate(
+                              [
+                                _typeTags(pokemonData, allPokemonTypes),
+                                _basicStats(pokemonData),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-        loading: () => _loading(),
-        error: (error, stackTrace) {
-          return CustomScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            slivers: [
-              _noPokemonAppBar(context),
-              SliverPadding(
-                padding: EdgeInsets.all(16),
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      _errorMessageCard(error, ref),
-                    ],
                   ),
                 ),
-              ),
-            ],
-          );
-        },
+              );
+            },
+            loading: () => _loading(),
+            error: (error, stackTrace) {
+              return CustomScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                slivers: [
+                  _noPokemonAppBar(context),
+                  SliverPadding(
+                    padding: EdgeInsets.all(16),
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          _errorMessageCard(error, ref),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+          Positioned(top: 0, left: 0, right: 0, child: NetworkStatusBar()),
+        ],
       ),
     );
   }

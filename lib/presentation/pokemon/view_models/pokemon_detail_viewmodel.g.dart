@@ -7,7 +7,7 @@ part of 'pokemon_detail_viewmodel.dart';
 // **************************************************************************
 
 String _$pokemonDetailViewModelHash() =>
-    r'95ad2514bd96acaab90193d29b6d169d3d7fa105';
+    r'7fd3f688ac803d5ccbbaa2d16eb03454593b7a24';
 
 /// Copied from Dart SDK
 class _SystemHash {
