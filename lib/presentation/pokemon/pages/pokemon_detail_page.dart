@@ -40,29 +40,26 @@ class PokemonDetailPage extends ConsumerWidget {
                             .notifier)
                         .fetchPokemonDetails();
                   },
-                  child: DefaultTabController(
-                    length: 1,
-                    child: Scaffold(
-                      backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
-                      body: CustomScrollView(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        slivers: [
-                          PokemonDetailsAppBar(
-                              basicColor: basicColor, pokemon: pokemon),
-                          SliverPadding(
-                            padding: EdgeInsets.all(16),
-                            sliver: SliverList(
-                              delegate: SliverChildListDelegate(
-                                [
-                                  _typeTags(pokemonData, allPokemonTypes),
-                                  _basicStats(pokemonData),
-                                ],
-                              ),
+                  child: Scaffold(
+                    backgroundColor:
+                        Theme.of(context).scaffoldBackgroundColor,
+                    body: CustomScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      slivers: [
+                        PokemonDetailsAppBar(
+                            basicColor: basicColor, pokemon: pokemon),
+                        SliverPadding(
+                          padding: EdgeInsets.all(16),
+                          sliver: SliverList(
+                            delegate: SliverChildListDelegate(
+                              [
+                                _typeTags(pokemonData, allPokemonTypes),
+                                _basicStats(pokemonData),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 );
