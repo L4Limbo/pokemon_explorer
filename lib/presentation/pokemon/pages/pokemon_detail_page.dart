@@ -5,9 +5,9 @@ import 'package:pokemon_explorer/domain/models/pokemon/pokemon_type.dart';
 import 'package:pokemon_explorer/domain/services/pokemon_type_service.dart';
 import 'package:pokemon_explorer/presentation/core/widgets/error_retry_widget.dart';
 import 'package:pokemon_explorer/presentation/pokemon/view_models/pokemon_detail_viewmodel.dart';
-import 'package:pokemon_explorer/presentation/pokemon/widgets/basic_stats_card.dart';
-import 'package:pokemon_explorer/presentation/pokemon/widgets/pokemon_details_app_bar.dart';
-import 'package:pokemon_explorer/presentation/pokemon/widgets/simple_tag.dart';
+import 'package:pokemon_explorer/presentation/pokemon/widgets/pokemon_details/basic_stats_card.dart';
+import 'package:pokemon_explorer/presentation/pokemon/widgets/pokemon_details/pokemon_details_app_bar.dart';
+import 'package:pokemon_explorer/presentation/core/widgets/simple_tag.dart';
 import 'package:pokemon_explorer/utils/extensions.dart';
 
 class PokemonDetailPage extends ConsumerWidget {
